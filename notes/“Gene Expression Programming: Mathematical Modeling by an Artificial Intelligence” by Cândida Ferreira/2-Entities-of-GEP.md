@@ -12,4 +12,4 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 - Thanks to the simple rules that determine structure of expression trees and their interactions, it is possible to infer immediately the phenotype (equivalent to folding of a protein) given the sequence of a gene and vice versa
 -  Called *Karva* language 
 
-## The genome
+## The Genome
