@@ -84,4 +84,37 @@ About information store in DNA, gene coding for proteins is relevant to us and a
 - Gene duplication happens when a gene is copied twice
     - This might cause protein to evolve into a different one 
 
+The expression of genetic information uses an intermediate molecule called messemger RNA (mRNA), and the process of its synthesis is called transcription 
+- During transcription, sequence of a gene is copied into an mRNA
+- This has all instructions to start stop and to synthesize the protein
+- This makes sense on the cell, but is of no use on computers
 
+- After translation, proteins can have posttranslational modifications
+- Each level of protein organization is built on lower levels, an everything is dictated by the primary structure of the protein
+- When a protein folds itslef, amino acids really far might be brought togheter, or neighbor amino acids might face different ways, thus being involved in distinct aspects of the structure and functionalities
+
+Much of the diversity we see in the living world, results from the accumulation of mutations in proteins. The modifications that occur at the molecular level in proteins enable populations of organisms to develop new abilities, adapt to environments and ultimately become new species. 
+For populations to adapt in the long run, individual organisims must reproduce, and the survival of an organism is important only if it leaves progeny, because they can exhibit new traits and adapt better. The better adapted leave more offspring. 
+
+## GAs, GP, GEP
+
+- GA was invented by John Holland in the 60s as an oversimplification of biological evolution (GAs)
+    - GAs individuals consist of chromosomes (0 and 1), simple replicators tht work both as genotype and phenotype. 
+    - GAs are simple but very limited, as the genotype is tied to phenotype, and due to its simple structure
+- GP was invented on 1985 and developed on 1992. 
+    - Nonlinear structures or parse trees with different sizes and shapes
+    - More varied alphabet, but lack of autonomous genome
+    - Great variety of functionalities, but reproduction is constrained due to its complex structure
+    - Really hard to keep all options valid
+    - Limited mutation operators don't bring a lot new on generations
+    -
+- GEP was invented by the author of this book in 1999
+    - Incorporates both simple chromosomes and ramified structures of different shapes, which are encoded on the chromosome. 
+    - In GEP the genotype and phenotype are finally separated from one another (!!!) 
+    - This means system can benefit from evolutionary advantages this brings
+    - This is all thanks to the invention of a chromosome capable of representing any parse tree
+    - Karva language was invented to reead and express information encoded in the chromosomes
+    - Allows the creation of multiple genes, each coding for smaller program or sub expression tree
+    - Only genetic algorithm with multiple genes
+    - Versatile structure that allows to implement very powerful set of genetic operations that can efficiently search the solution space
+    - Always generates valid structures  
