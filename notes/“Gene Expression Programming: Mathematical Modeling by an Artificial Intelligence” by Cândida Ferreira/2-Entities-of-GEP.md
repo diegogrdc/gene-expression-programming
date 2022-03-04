@@ -24,5 +24,5 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
     - Inferred with straightforward reading from left to right and top to bottom. 
     - *Q*-+abcd* maps to a function *Q((a - b) * (c + d))*
     - The expression tree would look like:
-    - ![image](img/2.2.png =100x)
+    - <img src="./img/2.2.png" ) height="50">
  - The expressions used are called *K-expressions* from *Karva* language
