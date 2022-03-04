@@ -41,7 +41,18 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 - This is the main difference between GEP and previous GP implementations
 
 ### Organization of Genes
-- Composed of two different domains, each with difrerent properties and functions
-    - Head domain
-        - Usually used  
-    - Tail Domain 
+- Composed of two different domains: head and tail domain, each with difrerent properties and functions
+- Head domain
+    - Used to encode the functions chosen for the problem at hand  
+    - Contains symbols that represent both functions and terminals
+- Tail Domain
+    -  Works as buffer or reservoir of terminals in order to guarantee the formation of only valid structures
+    -  Composed of only terminals
+- For each problem, a length *h* for the head is chosen
+- Length of tail is a function of *h* and the number of arguments of the function with more arguments *n_max* (called maximum arity)
+    - t = h * (n_max - 1) + 1
+- Both this parameters generate the length of the gene *g* 
+- With this, we make sure the genome is always valid, as we can use the buffer to fill out parameter terminals whenever needed. 
+    - An example of this would be to have *h* = 4 with operations { + and - }. Here, *n_max* is 2, so *t* =  5. Then *g* = 9
+     - With a gene *+ab-abbab*, we have the evaluation of *(a + b)*. Note how, even with *h = 4*, we only use 3 nodes. So the gene length is 9, but the ORF has length 3
+     - With a gene *++++aaaaa*, we get *(((a + a) + a) + (a + a))*. Even in a worst case where all our head spaces are filled with the max parameter operation, we have enough buffer space to finish the expression into a valid one     
