@@ -25,8 +25,23 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
     - *Q*-+abcd* maps to a function *Q((a - b) * (c + d))*
     - The expression tree would look like:
     - ![image](./img/2.2.png)
- - The expressions used are called *K-expressions* from *Karva* language
+ - The expressions used are called *K-expressions* from *Karva* language (also referred to as ORFs)
  - Another example of a *K-expression" is:
      - *Q*b**+baQba* 
      - ![image](./img/2.3.png)
- - Tree was filled as indicated. Left to right, top to bottob, only filling non terminal nodes with number of params required
+ - Tree was filled as indicated. Left to right, top to bottom, only filling non terminal nodes with number of params required
+- In GEP, there is no such thing as an invalid expression or computer program
+- This structure is simple and elegant, but in the context of a gene, it has other advantages
+    - Length of GEP genes is fixed, so on GEP what varies is the length of the ORFs.
+    -  Sometimes lenghts are the same, but as we said earlier, end points do not always concide, which leaves us with noncoding regions at the end of the gene. 
+- This noncoding regions are the essence of GEP and evolvability 
+    - They allow the modification of the genome through the use of virtually any kind of genetic operator without restrictions, always producing syntactically correct programs
+    - This oprens new grounds of exploration of search space 
+    - This fundamental property is called syntactic closure
+- This is the main difference between GEP and previous GP implementations
+
+### Organization of Genes
+- Composed of two different domains, each with difrerent properties and functions
+    - Head domain
+        - Usually used  
+    - Tail Domain 
