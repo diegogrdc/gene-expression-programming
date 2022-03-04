@@ -26,3 +26,7 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
     - The expression tree would look like:
     - ![image](./img/2.2.png)
  - The expressions used are called *K-expressions* from *Karva* language
+ - Another example of a *K-expression" is:
+     - *Q*b**+baQba* 
+     - ![image](./img/2.3.png)
+ - Tree was filled as indicated. Left to right, top to bottob, only filling non terminal nodes with number of params required
