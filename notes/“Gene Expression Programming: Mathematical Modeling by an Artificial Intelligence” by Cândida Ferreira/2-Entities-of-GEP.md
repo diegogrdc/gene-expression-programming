@@ -56,3 +56,23 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
     - An example of this would be to have *h* = 4 with operations { + and - }. Here, *n_max* is 2, so *t* =  5. Then *g* = 9
      - With a gene *+ab-abbab*, we have the evaluation of *(a + b)*. Note how, even with *h = 4*, we only use 3 nodes. So the gene length is 9, but the ORF has length 3
      - With a gene *++++aaaaa*, we get *(((a + a) + a) + (a + a))*. Even in a worst case where all our head spaces are filled with the max parameter operation, we have enough buffer space to finish the expression into a valid one     
+- Despite their fixed length, each gene has the potential to code for expression trees of different sizes and shapes, from only one terminal node, to one composed of *g* nodes
+- If we always mantain the boundaries between head and tail and their rules, it is easy to see that we will always get a valid expression 
+
+### Multigenic chromosomes
+- In nature, chromosomes usually code for more than one gene
+- The evolution of more complex entities is only possible through the creaetion of multigenic genomes
+- GEP also explores the advantages of multigenic systems
+- Chromosomes of GEP are usually composed of more than one gene on equal length
+    - The number of genes and length of head is usually chosen a priori
+- Each gen codes for a sub-ET, and the sub-ETs might interact with one another, forming a more complex entity   
+- We can make a big chain with all genomes. If we know *h* and *t*, it is easy to know where each genome starts, so we have a clear separation.
+    - On a multigenic chromosome with *h* = 3, and *t* = 4
+    - chromosome is *+++aaaabbbbaaa+abbaba*
+    - The length is 21, so if we know *g* = 7, then we know we have 3 genes
+    - Each gene has a length of 7, even if the evaluation is shorter
+    - So each gene would be *+++aaaa*, *bbbbaaa*, and *+abbaba*  
+    - Each ET has length 7, 1 and 3
+
+## Expression Trees and Phenotype  
+
