@@ -13,3 +13,16 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 -  Called *Karva* language 
 
 ## The Genome
+
+- In GEP, the genome (chromosome) consists of a linear, symbolic string of fixed length, composed of one or more genes. 
+    - Despite their fixed length, GEP chromosomes code for expression trees of different sizes and lenghts
+- Structure of GEP gene 
+    - In GEP, the start site is always the first position of a gene
+    - The termination point does not always concide with last position of a gene
+- Algebraic expressions can be represented as expression trees (ET)
+    - This kind of representation is the phenotype of GEP genes
+    - Inferred with straightforward reading from left to right and top to bottom. 
+    - *Q*-+abcd* maps to a function *Q((a - b) * (c + d))*
+    - The expression tree would look like:
+    - ![image](img/2.2.png)
+ - The expressions used are called *K-expressions* from *Karva* language
