@@ -76,3 +76,10 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 
 ## Expression Trees and Phenotype  
 
+- GEP chromosomes can have different structural organizations, which leads to different degrees of complexity on the individuals encoded in each one. 
+- Simplest one we have encountered is encoded in a single gene, and the "organism" is the product of one gene, an ET composed of one subunit. 
+- In other cases the "organism" is a multi-subunit ET in which different subunits are linked together by a particular linking function, or other case where the "organism" is composed of different sub-ETs, in which each each one is responsible for a particular facet of the problem.  
+- This leads to different levels of phenotypic complexity that will be explored in this section
+
+### Information Decoding: Translation
+- All GEP programming starts with translation, which represents the construction of all the sub-ETs. 
