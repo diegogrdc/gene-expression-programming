@@ -83,3 +83,15 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 
 ### Information Decoding: Translation
 - All GEP programming starts with translation, which represents the construction of all the sub-ETs. 
+- When genome codes for more than one gene, each gene is independently translated as a sub-ET, wich can be linked to others, or work togheter with others without direct connections between them. 
+    - For example, a chromosome with three genomes generates three different sub-ETs. 
+    - Usually, each sub-ET is part of a bigger program in which they are linked by a particular linking function 
+    - For those chromosomes, the expression of genetic information starts with translation of sub-ETs, but ends only after linking by the linking function 
+    - Therefore, the "organism" will consist of a multi-subunit ET, composed of three smaller subunits
+    - In multiple output problems, each genome works in identifying of one kind of output. They are not physically connected, but they work together for identification, like in classification problems. 
+
+### Posttransational Interactions and Linking Functions
+- For algebraic expressions, usually addition, substraction, multiplication or division is chosen to link the sub-ETs
+- For boolean expressions, linking functions usually use NOR, LT, GT, XOR, NAND, AND, NXOR, LOE, GOE and OR. Also functions with three arguments like IF THEN ELSE.
+- Easiest linking is with functions taking two arguments, as any number of sub-ETs can be linked one after another. 
+- Linking functions of more than two arguments, say `n`, is more problematic, as it requires `n^n` sub-ETs for correct linking. 
