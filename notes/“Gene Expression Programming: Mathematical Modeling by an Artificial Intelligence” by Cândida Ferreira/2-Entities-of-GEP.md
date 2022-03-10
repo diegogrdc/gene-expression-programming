@@ -95,3 +95,13 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 - For boolean expressions, linking functions usually use NOR, LT, GT, XOR, NAND, AND, NXOR, LOE, GOE and OR. Also functions with three arguments like IF THEN ELSE.
 - Easiest linking is with functions taking two arguments, as any number of sub-ETs can be linked one after another. 
 - Linking functions of more than two arguments, say `n`, is more problematic, as it requires `n^n` sub-ETs for correct linking. 
+- This solutions might be achieved with a single genome, but using multigenic chromosomes is more appropiate to evolve solutions to complex problems, for they permit modular construction of more complex, hierarchical, structure, wheere each gene is a small building block.
+    - The separation of building blocks lets them evolve with a certain degree of independence
+- For each problem, the type of linking function or interaction between sub-ETs must be chosen a-priori
+    - We can start with addition for algebraic expressions, or OR for boolean rules, but sometimes other functions might be more appropiate.
+    - The idea is to find a good solution
+    - Different linking functions can be chosen to explore different solutions
+- Basic GEP algorithm can be easily modified to enable evolution of linking functions 
+    - A way of solving this consists of creating homeotic genes that encode a developmental program or cell, in which different combinations of sub-ETs are brought together by following linking interactions operating in that particular cell (more on this later).  
+
+## Cells and the Evolution of Linking Functions
