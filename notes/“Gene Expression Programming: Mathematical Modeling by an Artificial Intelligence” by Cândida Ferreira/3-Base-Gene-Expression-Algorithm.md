@@ -2,7 +2,7 @@
 
 - The fundamental steeps of gene expression algorithm (GEA) are schematically represented in the following diagram: 
 
-<img src="./img/3.1.png" width="400"/>
+<p align="center"><img src="./img/3.1.png" width="300"/></p>
 
 - Process begins with random generation of chromosomes of a certain number of individuals (called Initial Population)
 - Then, these chromosomes are expressed, and the fitness of each individual is evaluated against a set of fitness cases (also called selection environment)
