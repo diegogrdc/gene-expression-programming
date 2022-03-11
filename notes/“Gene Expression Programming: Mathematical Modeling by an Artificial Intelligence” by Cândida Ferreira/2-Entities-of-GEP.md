@@ -105,3 +105,65 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
     - A way of solving this consists of creating homeotic genes that encode a developmental program or cell, in which different combinations of sub-ETs are brought together by following linking interactions operating in that particular cell (more on this later).  
 
 ## Cells and the Evolution of Linking Functions
+
+- The linking of sub-ETs by a particular linking function is simple and highly efficient in evolutionary terms, as the change from unigenic to multigenic systems considerably increases efficiency
+- Linking of sub-ETs in GEP can be implemented by using a higher level of complexity. 
+- For that purpose, homeotic genes were created in GEP, to control the development of the individual
+- Homeotic genes determine which genes are expressed in each cell, and how the sub-ETs interact with one another.
+    - They determine which sub-EETs are called upon, how often, in which main program cell, and what connections they make. 
+    - The how is explained in the next section 
+
+### Homeotic Genes and the Cellular System
+
+- Homeotic Genes have exactly the same kind of structural organization as normal genes, and they are build with the same process. 
+    - They contain a head and a tail.
+    - Head contains linking functions and a special class of terminals 
+    - Genic terminals represent conventional genes which encode different sub-ETs
+    - Tail only contains Genic Terminals
+
+- An example with the following gene
+> /+a/abbba+*-abbabb/b*+abaab+Q/0*210212
+
+- It has three conventional genes and one homeotic gene (shown in bold)
+- Three conventional genes are the same as before
+- Now these sub-ETs may be invoked multiple times from different places, acting as automatically defined functions (ADFs)
+- The last gene (homeotic gene) determines which functions are used to link the sub-ETs or ADFs and how linking is done 
+
+The resulting genes in the example would look like the following image:
+!(image)[2.7.png]
+
+- This makes our homeotic gene dynamic and flexible
+    - It allows the use of any kind of linking function with one, two or more arguments
+    - It can use different linking functions at a time
+    - This system is unsupervised, and linking functions can be sorted out with evolution too
+- It also gives us the possibility to reuse code 
+    - This can be seen as an extremely elegant form of implementing ADFs in GEP
+
+- Homeotic genes have a specific length and a specific set of functions
+- This functions can take any number of arguments (1, 2, .., N)
+
+### Multicellular Systems with Multiple Main Programs 
+
+- Using more than one homeotic gene results in a multicellular system where each homeotic gene puts together a different combination of sub-ETs. 
+- For example, a gene might contain three conventional genes and two homeotic genes, leading to two different cells or main programs, each expressing genes in different ways
+- The application of these multicellular systems are multiple an varied
+    - They can be used in problems with one output, or multiple outputs. 
+    - In one output problems, the best cell accounts for the fitness of the individual
+    - In multiple output problems, each cell is responsible for a particular facet
+
+### Other Levels of Complexity
+
+- We have been dealing with only head/tails, but GEP regularly uses other chromosomal organizations that are more complex than this
+- These complex chromosomal structures consist of clusters of functional unis composed of conventional head/tail domains, plus some other extra domains
+- The extra domains usually come for several one-element sub-ETs, where they interact forming a more complex entity. 
+- Even Neural Networks can be encoded in a linear genome with multiple domains, adding some extra things to our genomes (more on this later).
+
+### Karla Language: The Language of GEP
+
+- Karva language is a versatile representation that can be used to evolve relatively complex programs as simple, compact, symbolic strings. 
+- There are softwares that automatically convert K-expressions and GEP chromosomes into programming languages like C, C++, Java, and others
+    - "Automatic Problem Solver" by Gepsoft is one example
+- Another advantage of Karva notation is that it can be used with any programming language
+
+
+Next Chapter explores implementation details of GEP algorithm   
