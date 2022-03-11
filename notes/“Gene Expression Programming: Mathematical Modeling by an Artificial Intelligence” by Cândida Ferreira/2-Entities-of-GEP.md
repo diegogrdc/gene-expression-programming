@@ -22,7 +22,7 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 - Algebraic expressions can be represented as expression trees (ET)
     - This kind of representation is the phenotype of GEP genes
     - Inferred with straightforward reading from left to right and top to bottom. 
-    - *Q*-+abcd* maps to a function `Q((a - b) * (c + d))`
+    - `Q*-+abcd` maps to a function *Q((a - b) * (c + d))*
     - The expression tree would look like:
     - ![image](./img/2.2.png)
  - The expressions used are called *K-expressions* from *Karva* language (also referred to as ORFs)
