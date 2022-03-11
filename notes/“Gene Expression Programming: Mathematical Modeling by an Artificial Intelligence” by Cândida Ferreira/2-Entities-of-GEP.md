@@ -122,7 +122,7 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
     - Tail only contains Genic Terminals
 
 - An example with the following gene
-> /+a/abbba+*-abbabb/b*+abaab+Q/0*210212
+- `/+a/abbba+*-abbabb/b*+abaab`**`+Q/0*210212`**
 
 - It has three conventional genes and one homeotic gene (shown in bold)
 - Three conventional genes are the same as before
