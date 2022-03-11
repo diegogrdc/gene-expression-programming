@@ -31,3 +31,5 @@ This chapter explores this steps in depth. The goal is to understand the logisti
     - Remember they will always be valid if we fill head with functions and terminals, and tail with just terminals
 - Usually, this individuals are not very good, but they are all we need to get started, as evolution will take care of the rest
 - Problem with random generation of initial population is that, sometimes, specially with small populations or fitness cases not broad enough, or tight fitness function, it might happen that none of the initial chromosomes encoded viable individuals (due to their fitness), and the run is aborted.  
+
+<img src="./img/2.7.png" width="200"/>
