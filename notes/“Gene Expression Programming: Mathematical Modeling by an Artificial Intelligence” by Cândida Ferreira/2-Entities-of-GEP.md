@@ -130,7 +130,7 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 - The last gene (homeotic gene) determines which functions are used to link the sub-ETs or ADFs and how linking is done 
 
 The resulting genes in the example would look like the following image:
-!([image](./img/2.7.png)
+![image](./img/2.7.png)
 
 - This makes our homeotic gene dynamic and flexible
     - It allows the use of any kind of linking function with one, two or more arguments
