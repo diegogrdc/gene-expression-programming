@@ -22,12 +22,12 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 - Algebraic expressions can be represented as expression trees (ET)
     - This kind of representation is the phenotype of GEP genes
     - Inferred with straightforward reading from left to right and top to bottom. 
-    - *Q*-+abcd* maps to a function *Q((a - b) * (c + d))*
+    - *Q*-+abcd* maps to a function `Q((a - b) * (c + d))`
     - The expression tree would look like:
     - ![image](./img/2.2.png)
  - The expressions used are called *K-expressions* from *Karva* language (also referred to as ORFs)
  - Another example of a *K-expression" is:
-     - *Q*b**+baQba* 
+     - `Q*b**+baQba`
      - ![image](./img/2.3.png)
  - Tree was filled as indicated. Left to right, top to bottom, only filling non terminal nodes with number of params required
 - In GEP, there is no such thing as an invalid expression or computer program
@@ -54,8 +54,8 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 - Both this parameters generate the length of the gene *g* 
 - With this, we make sure the genome is always valid, as we can use the buffer to fill out parameter terminals whenever needed. 
     - An example of this would be to have *h* = 4 with operations { + and - }. Here, *n_max* is 2, so *t* =  5. Then *g* = 9
-     - With a gene *+ab-abbab*, we have the evaluation of *(a + b)*. Note how, even with *h = 4*, we only use 3 nodes. So the gene length is 9, but the ORF has length 3
-     - With a gene *++++aaaaa*, we get *(((a + a) + a) + (a + a))*. Even in a worst case where all our head spaces are filled with the max parameter operation, we have enough buffer space to finish the expression into a valid one     
+     - With a gene `+ab-abbab`, we have the evaluation of *(a + b)*. Note how, even with *h = 4*, we only use 3 nodes. So the gene length is 9, but the ORF has length 3
+     - With a gene `++++aaaaa`, we get *(((a + a) + a) + (a + a))*. Even in a worst case where all our head spaces are filled with the max parameter operation, we have enough buffer space to finish the expression into a valid one     
 - Despite their fixed length, each gene has the potential to code for expression trees of different sizes and shapes, from only one terminal node, to one composed of *g* nodes
 - If we always mantain the boundaries between head and tail and their rules, it is easy to see that we will always get a valid expression 
 
@@ -68,10 +68,10 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 - Each gen codes for a sub-ET, and the sub-ETs might interact with one another, forming a more complex entity   
 - We can make a big chain with all genomes. If we know *h* and *t*, it is easy to know where each genome starts, so we have a clear separation.
     - On a multigenic chromosome with *h* = 3, and *t* = 4
-    - chromosome is *+++aaaabbbbaaa+abbaba*
+    - chromosome is `+++aaaabbbbaaa+abbaba`
     - The length is 21, so if we know *g* = 7, then we know we have 3 genes
     - Each gene has a length of 7, even if the evaluation is shorter
-    - So each gene would be *+++aaaa*, *bbbbaaa*, and *+abbaba*  
+    - So each gene would be `+++aaaa`, `bbbbaaa`, and `+abbaba` 
     - Each ET has length 7, 1 and 3
 
 ## Expression Trees and Phenotype  
