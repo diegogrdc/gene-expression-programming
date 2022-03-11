@@ -24,11 +24,11 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
     - Inferred with straightforward reading from left to right and top to bottom. 
     - `Q*-+abcd` maps to a function *Q((a - b) * (c + d))*
     - The expression tree would look like:
-    - ![image](./img/2.2.png)
+    <p align="center"><img src="./img/2.2.png" width="200"/></p>
  - The expressions used are called *K-expressions* from *Karva* language (also referred to as ORFs)
  - Another example of a *K-expression" is:
      - `Q*b**+baQba`
-     - ![image](./img/2.3.png)
+     <p align="center"><img src="./img/2.3.png" width="200"/></p>
  - Tree was filled as indicated. Left to right, top to bottom, only filling non terminal nodes with number of params required
 - In GEP, there is no such thing as an invalid expression or computer program
 - This structure is simple and elegant, but in the context of a gene, it has other advantages
@@ -130,7 +130,7 @@ GEP gene expression is simple. The main players are only two: The chromosomes an
 - The last gene (homeotic gene) determines which functions are used to link the sub-ETs or ADFs and how linking is done 
 
 The resulting genes in the example would look like the following image:
-![image](./img/2.7.png)
+<p align="center"><img src="./img/2.7.png" width="400"/></p>
 
 - This makes our homeotic gene dynamic and flexible
     - It allows the use of any kind of linking function with one, two or more arguments
