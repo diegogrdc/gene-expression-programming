@@ -107,7 +107,7 @@ This chapter explores this steps in depth. The goal is to understand the logisti
 - Based on standard R-square, that returns square of Pearson product moment correlation coefficient
     - This coefficient ranges from -1 to 1, and reflects the extent of a linear relationship between predicted and target values. 1 means perfect correlation, -1 is a perfect negative correlation. 0 means no correlation
 - Formally, the Pearson product moment correlation coefficient `R(i)` of an individual program `i` is evaluated by:
-<p align="center"><img src="./img/3.6.png" width="300"/></p>
+- <p align="center"><img src="./img/3.6.png" width="300"/></p>
 - Where `P(i, j)` is predicted value by individual `i` for fitness case `j`, and `T(j)` is target value for fitness case `j`
 - Then, fitness `f(i)` of individual `I` would be
     - `f(i) = 1000 * R(i)^2`
