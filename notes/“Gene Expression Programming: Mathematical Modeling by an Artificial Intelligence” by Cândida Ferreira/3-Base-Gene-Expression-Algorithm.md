@@ -67,4 +67,16 @@ This chapter explores this steps in depth. The goal is to understand the logisti
 
 ### Fitness Functions for Symbolic Regression
 
-- 
+- An important application of evolutionary computation is symbolic regression, where the goal is to find a model that is good at numeric prediction (will perform well for all fitness cases)
+- There are several measures to evaluate how good these models are
+    - Some are based on the absolute error between predicted and target values
+    - Others are based on relative error
+    - Others are based on statistical indexes that measure correlation between values
+- Depending on the problem, any fitness function could perform better or worse than others, but some functions like mean squared error or R-square are universal, and can be used to evolve very good models in all kinds of problems
+
+#### Number of Hits
+
+- Favors Models that perform well for all fitness cases within a certain error (absolute or relative)
+- Formally, fitness `f(i, j)` of an individual program `i` for fitness case `j` is evaluated by:
+    - If `err(i, j) <= p`, then `f(i, j) = 1`, else `f(i, j) = 0`
+    - where `p` is precision error, and `err(i, j)` is error on individual program `i` for test case `j` 
