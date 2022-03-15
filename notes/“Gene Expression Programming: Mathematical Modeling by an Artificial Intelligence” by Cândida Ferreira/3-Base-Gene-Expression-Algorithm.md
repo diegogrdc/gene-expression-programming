@@ -32,3 +32,39 @@ This chapter explores this steps in depth. The goal is to understand the logisti
     - Remember they will always be valid if we fill head with functions and terminals, and tail with just terminals
 - Usually, this individuals are not very good, but they are all we need to get started, as evolution will take care of the rest
 - Problem with random generation of initial population is that, sometimes, specially with small populations or fitness cases not broad enough, or tight fitness function, it might happen that none of the initial chromosomes encoded viable individuals (due to their fitness), and the run is aborted.  
+- To avoid this issue, we can introduce a start up control. 
+    - This control is set by default to one viable individual
+    - This does not hinder the evolutionary process, as GEP populations can evolve efficiently even with just one viable founder  
+    - This control, with cloning of best individual prevents the existence of failed runs in GEP
+- If all individuals of initial population happens to have zero fitness, another initial population is randomly generated, until at least one viable individual is created and evolutionary process can resume
+
+### Subsequent Generations and Elitism
+
+- From generation to generation, the best individual (or one of the best) is replicated unchanged into the next generation. 
+    - If more than one have the same best fitness, the last one is chosen to become a clone
+- The cloning the best (simple elitism), guarantees that at least one descendant will be viable (in problems where selection environment is the same in all generations)
+- Elitism has a big advantage on high modification rates, as we don't have the risk of causing a mass extinction
+- In GEP, populations are always evolving at high creative rates in creative periods 
+    - AI gives the opportunity to have much faster evolution and in constant turmoil, allowing the discovery of good solutions in record time
+    - This is in really different in nature, as adaptation and evolution happens slowly and smoothly
+
+## Fitness Functions and the Selection Environment 
+
+- Fitness function and selection environments are the two faces of fitness and they are intricately connected
+    - Fitness of an individual is relative to a particular environment and to the measure (fitness function) used to evaluate them 
+- Success of a problem not only depends on the fitness function, but also on quality of selection environment 
+
+### The Selection Environment 
+
+- Selection environment is the input to the evolutionary system
+- Models will depend greatly on the quality of the environment we choose for them to blossom 
+- First requirement is a set of fitness cases representative of the problem at hand
+- Second consists of a all-balanced set, to avoid the creation of models that can only solve a partial marginal aspect of the overall problem
+- Even with a good data set, it is possible to get stuck in local optima, and individuals might need a little help
+- To do this, we can change our fitness function
+    - This changes the fitness landscape, and a peak can become a valley, leading to better solutions
+- It is handy to have more than one fitness function at our disposal to try a few of them on a problem 
+
+### Fitness Functions for Symbolic Regression
+
+- 
