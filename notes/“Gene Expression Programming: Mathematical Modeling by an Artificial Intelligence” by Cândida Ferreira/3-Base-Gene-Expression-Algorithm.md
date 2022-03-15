@@ -73,10 +73,42 @@ This chapter explores this steps in depth. The goal is to understand the logisti
     - Others are based on relative error
     - Others are based on statistical indexes that measure correlation between values
 - Depending on the problem, any fitness function could perform better or worse than others, but some functions like mean squared error or R-square are universal, and can be used to evolve very good models in all kinds of problems
+- Remember, absolute error is `abs(p - t)` and relative error is `abs((p - t) / t)`, where `p` is predicted value, and `t` is target value
 
 #### Number of Hits
 
 - Favors Models that perform well for all fitness cases within a certain error (absolute or relative)
 - Formally, fitness `f(i, j)` of an individual program `i` for fitness case `j` is evaluated by:
-    - If `err(i, j) <= p`, then `f(i, j) = 1`, else `f(i, j) = 0`
+    - `If err(i, j) <= p, then f(i, j) = 1, else f(i, j) = 0`
     - where `p` is precision error, and `err(i, j)` is error on individual program `i` for test case `j` 
+
+#### Precision and Selection Range
+
+- Idea of a selection range and a precision. 
+    - Selection range is used as a limit for selection to operate
+    - Precision is the limit for improvement
+- Formally, fitness `f(i)` of an individual program `i` is expressed by:
+    - `f(i) = sum_j_from_1_to_n(R - err(i, j))`
+    - Where `R` is the selection range and `err(i, j)` is error for test case `j` with individual `i`
+    - The error term is called the precision `p`
+
+#### Mean Squared Error
+
+- Based on standard mean squared error
+- Formally, mean squared error `E(i)` of an individual program `i` is:
+    - `E(i) = 1 / n * sum_j_from_1_to_n(err(i, j)^2)`
+- As it stands, `E(i)` cannot be used directly to measure fitness, as fitness must increase with efficiency (in this case it is reduced).
+- Thus, to evaluate fitness `f(i)` of an individual `i`, the following equation is used
+    - `f(i) = 1000 * 1 / (1 + E(i))`
+    - It ranges from 0 to 1000, with 1000 being the ideal 
+
+#### R-Square
+
+- Based on standard R-square, that returns square of Pearson product moment correlation coefficient
+    - This coefficient ranges from -1 to 1, and reflects the extent of a linear relationship between predicted and target values. 1 means perfect correlation, -1 is a perfect negative correlation. 0 means no correlation
+- Formally, the Pearson product moment correlation coefficient `R(i)` of an individual program `i` is evaluated by:
+<p align="center"><img src="./img/3.6.png" width="300"/></p>
+- Where `P(i, j)` is predicted value by individual `i` for fitness case `j`, and `T(j)` is target value for fitness case `j`
+- Then, fitness `f(i)` of individual `I` would be
+    - `f(i) = 1000 * R(i)^2`
+
