@@ -185,4 +185,105 @@ And for evaluating fitness `f(i)` of an individual program `i`, we get:
 - There are other selection schemes, but most popular are roulette-wheel, deterministic, tournament selection, between others. 
 - In GEP it doesn't really matter, the important part is to have a good genotype/phenotype system with good genetic operators 
 
- 
+ ## Reproduction with Modification 
+
+- According to fitness and luck, individuals are selected to reproduce with modification
+- This creates the fundamental genetic diversity that allows adaptation in the long run 
+- In GEP, all modifications occur after the replication of the genome, in an orderly fashion, starting with replication, then mutation, inversion, transposition, and finally recombination 
+    - It's important to note that the order in which the genome is modified is not important no the final outcome 
+- Replication copies all selected genomes exactly the same
+- All remaining operators randomly pick up chromosomes to be subjected with certain modifications. And except for mutation, each operator is not allowed to modify a chromosome more than once
+- In GEP, a chromosome might be randomly chosen to be modified by more than one modification operator during its reproduction. This might create new population very different from the old one 
+- Presented below, are the most commonly used genetic operators
+
+
+### Replication and Selection 
+- Most uninteresting operator of all, as it contributes nothing to genetic variation
+- Together with selection, it can create genetic drift, and with modifications, it allows adaptation and evolution
+- Selection operator chooses individuals to be reproduced according to their fitnesses and luck of roulette 
+    - The higher the fitness, the higher the probability of leaving offspring
+- Replication copies exactly the chromosomes of the individuals picked up by the selection operator  
+
+### Mutation 
+
+- Mutation is efficient, as it has a lot of modification power 
+- With mutation, populations adapt very efficiently, allowing evolution of good solutions to virtually all problems 
+- Needs a mutation rate `p(m)`
+    - Author usually uses a rate equivalent to two one point mutations per chromosome 
+    - For example, a chromosome of length 14 might have a `p(m) = 2/14 = 0.143`
+- GEP allows mutations anywhere in the chromosome, but structural organization must be preserved
+    - In head, any symbol can change into another (function or terminal), and in tails, terminals can change only into terminals 
+- GEP point mutation is totally unconstrained, any function without concern for number of arguments, terminals, anything   
+- Point mutations can have a deep effect, changing drastically the sub-ETs, or can have a neutral change that might induce a change in the future 
+- Remember this is one of main differences of GEP to other genetics algorithms. There are no constrains in type of mutation and number of mutations, as it is always valid. The algorithm explores freely
+
+###  Inversion
+
+- Modifications bound to make a big impact occur usually in the heads of genes
+- Therefore, inversion operator is restricted to that region 
+- Any sequence might be randomly selected and inverted 
+- As we just work with the head, inversions are always valid (no functions will go to the tail), and we can freely do the operations 
+- Inversion randomly chooses a chromosome, a gene in it, and a start and termination point of the sequence that will be inverted 
+- Usually, a small inversion rate `p(i)` of 0.1 is used, as this operator is rarely used as the only source of genetic variation 
+- Inversion can cause macro mutations, as it can change the sub-ET completely. This is not bad, they are in fact essential to drive evolution into other very distant peaks 
+
+### Transposition and Insertion Sequence Elements
+
+- Transposable elements of GEP are fragments of the genome that can be activated and jump to another place in chromosome
+- There are three kinds of transposable elements in GEP
+    - Short fragments with either a function or terminal in the first position that transpose to the head of genes, except the root (insertion sequence elements, or IS elements)
+    - Short fragments with a function in the first position that transpose to the root of genes (root IS elements, or RIS elements)
+    - Entire genes that transpose to the beginning of chromosomes 
+- No need to be cautions when designing genetic operators, as any modification (even the most disruptive) is capable of finding very good solutions very efficiently
+
+#### Transposition of IS elements
+
+- Any sequence in the genome can become an IS element, and these elements are randomly chosen throughout the chromosome 
+- The transposon is then copied at the place of origin and the copy is afterwards inserted at a randomly chosen point in the head of the gene (except the start position) 
+- Transposition operator randomly chooses the chromosome, the start and termination point of the IS element, and the target site. 
+- Typically, a small IS transposition rate `p(is)` of 0.1 is used, as this operator is rarely used as the only source of genetic variation 
+- Selected sequence is activated and jumps to the insertion site, and a sequence with as many symbols as the IS element is deleted at the end of the head, to keep structural organization of chromosomes
+
+#### Root Transposition 
+
+- All RIS elements start with a function, so we choose a random point and scan until a function is found. This function becomes the first position of the RIS element
+    - If no functions are found, operator does nothing 
+- Transposition operator chooses a random chromosome and gene, and start and termination points of the RIS element
+- Typically, a root transposition rate `p(ris)` of 0.1 is used 
+- As with IS, in RIS we delete a sequence with the same length at the end of the head of the gene modified to keep structure
+
+#### Gene Transposition 
+
+- In gene transposition an entire gene works as a transposon, and transposes itself to the beginning of the chromosome
+- In contrast to other forms (IS and RIS), in gene transposition, the genes is deleted at the place of origin, to maintain the length of the chromosome 
+- It shuffles genes, and when sub-ETs are linked with non-commutative functions, the order matters and gene transposition becomes a macromutator 
+- Only transposition can move genes around in a chromosome 
+- Needs other operations, as it can't create new genes, just move around existing ones 
+
+### Recombination   
+
+- GEP uses three kinds of recombination 
+    - One-point recombination 
+    - Two-point recombination
+    - Gene recombination 
+- In all types, two chromosomes are randomly chosen and paired to exchange some material between them, resulting in formation of two new individuals
+- When used together with transposition, it is capable of duplicating genes, which is very important for an efficient and innovative evolution
+
+#### One-point Recombination
+
+- Parent chromosomes are paired side by side and split up ay exactly the same point
+- Material downstream of recombination point is afterwards exchanged between the two chromosomes
+- In GEP, a recombination always involves two parents and forms two new individuals 
+
+#### Two-point Recombination
+
+- Parent chromosomes are paired side by side and two points are randomly chosen by which both chromosomes are split
+- The material between recombination points is then exchanged between chromosomes
+- More disruptive than one-point, as it recombines genetic material more thoroughly 
+- One and two-point tend to homogenize populations
+
+#### Gene Recombination
+
+- Entire genes are exchange between two parent chromosomes, forming two new daughter chromosomes containing genes from both parents
+- Randomly chooses two parent chromosomes and gene to be exchanged 
+- Typically a small gene recombination rate `p(gr)` of 0.3 is used 
