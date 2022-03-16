@@ -173,3 +173,16 @@ This chapter explores this steps in depth. The goal is to understand the logisti
     - `PN(i) = PPV(i) * NPV(i)`
 And for evaluating fitness `f(i)` of an individual program `i`, we get:
     - `f(i) = 1000 * PN(i)`
+
+### Selection Mechanism 
+- In GEP, individuals are selected according to fitness by roulette-wheel sampling
+    - Each individual receives a slice of the roulette-wheel proportional to its fitness
+    - Roulette is spun as many times as there are individuals in the population, so that population size is maintained 
+    - The bigger the slice, the higher the probability of being selected
+- This kind of selection together with simple elitism is used through the book 
+- Sometimes best individuals might be lost and mediocre ones are passed on, but this is not bad, as good individuals might be created again and be more fortunate, and descendants of mediocre individuals won't necessarily be mediocre, and adaptation goes on, and perhaps through an unexpected path, we might reach a global optimum
+- Nonetheless, due to the cloning of the best individual of each generation, the survival and reproduction of the best is guaranteed, so the best trait is never lost, and it is in continuous improvement
+- There are other selection schemes, but most popular are roulette-wheel, deterministic, tournament selection, between others. 
+- In GEP it doesn't really matter, the important part is to have a good genotype/phenotype system with good genetic operators 
+
+ 
