@@ -287,3 +287,12 @@ And for evaluating fitness `f(i)` of an individual program `i`, we get:
 - Entire genes are exchange between two parent chromosomes, forming two new daughter chromosomes containing genes from both parents
 - Randomly chooses two parent chromosomes and gene to be exchanged 
 - Typically a small gene recombination rate `p(gr)` of 0.3 is used 
+
+## Solving a Problem 
+- Choose the fitness function
+- Choose terminals and functions 
+- Choose chromosomal architecture
+    - length of head and number of genes
+- Choose linking function 
+- Choose set of genetic operators and their rates
+
