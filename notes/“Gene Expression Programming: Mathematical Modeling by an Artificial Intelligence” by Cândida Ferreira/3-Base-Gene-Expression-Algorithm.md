@@ -112,3 +112,64 @@ This chapter explores this steps in depth. The goal is to understand the logisti
 - Then, fitness `f(i)` of individual `I` would be
     - `f(i) = 1000 * R(i)^2`
 
+### Fitness Functions for Classification and Logic Synthesis
+
+- Classification and logic synthesis are different, but share a similarity: Their predictables or dependent variables are both binary, so they can use same kind of fitness functions
+- Usually, there are four different outcomes of a single prediction for a two class problem
+    - False Positive (FP)
+    - False Negative (FN)
+    - True Positive (TP)
+    - True Negative (TN)
+- Usually FN and FP will have different costs, and TP and TN will have different benefits
+
+#### Number of Hits
+
+- Corresponds tu number of samples correctly classified
+- Formally, fitness `f(i)` of an individual program `i` is evaluated by:
+    - `f(i) = h`
+    - where `h` is the number of fitness cases correctly evaluated
+- Sometimes a more sophisticated function is needed, as it is easy to get simple programs with high fitness, even if they are not really good predictors
+
+#### Hits With Penalty
+
+- Designed to avoid dissemination of useless programs that trap system in local optima
+- To do that, we can follow the following strategy
+    - For each program `i`, both number of `TP(i)` and `TN(i)` are evaluated 
+    - As long as either `TP(i)` or `TN(i)` remain equal to zero, this model will be considered unviable and it won't be selected to reproduce
+- Formally, the fitness `f(i)` of an individual program `i` is evaluated by:
+    - `IF (TP(i) = 0 or TN(I) = 0) THEN f(i) = 0; ELSE f(i) = h`
+    - where `h` is number of fitness cases correctly evaluate   
+
+#### Sensitivity / Specificity 
+
+- Based on both the sensitivity and specificity indicators, commonly used in the medical field 
+    - Sensitivity reflects the probability of diagnostic test finding disease among those who have the disease, or people with disease with a positive result
+    - Specificity reflects the probability of diagnostic test finding no disease among those who don not have the disease or the proportion of people free of disease with a negative test 
+- Formally (and more clearly) the sensitivity `SE(i)` of a program `i` is evaluated by:
+    - `SE(i) = TP(i) / (TP(i) + FN(i))`
+    - In other words, of all real positives, what percentage was correct
+- The specificity `SP(i)` is evaluated by:
+    - `SP(i) = TN(i) / (TN(i) + FP(i))`
+    - In other words, of all real negatives, what percentage was correct 
+- By multiplying both indicators, one focus the discovery of models with high sensitivity and specificity 
+- It is useful when we have highly unbalanced training sets (excess of positive  or negative instances)
+- Sensitivity/Specificity `SS(i)` of an individual program `i` is: 
+    - `SS(i) = SE(i) * SP(i)`
+- And to evaluate fitness `f(i)` of an individual program `i` is:
+    - `f(i) = 1000 * SS(i)`
+
+#### Positive/Negative Predictive Value 
+
+- Based both on positive predictive value (PPV) and negative predictive value (NPV) indicators. This indicators are also commonly used in medicine:
+    - PPV reflects the percentage of people with a positive diagnostic test result who actually have the disease
+    - NPV reflects the percentage of people with a negative diagnostic test who do not have the disease
+- More formally, `PPV(i)` of an individual `i` is evaluated by:
+    - `PPV(i) = TP(i) / (TP(i) + FP(i)) where TP(i) + FP(i) is not 0`
+    - In other words, of all True guesses, what percentage was correct
+- And `NPV(i)` is evaluated by: 
+    - `NPV(i) = TN(i) / (TN(i) + FN(i)) where TN(i) + FN(i) is not 0`
+    - In other words, of all False guesses, what percentage was correct
+- Again, by multiplying both we make sure model takes both into account
+    - `PN(i) = PPV(i) * NPV(i)`
+And for evaluating fitness `f(i)` of an individual program `i`, we get:
+    - `f(i) = 1000 * PN(i)`
