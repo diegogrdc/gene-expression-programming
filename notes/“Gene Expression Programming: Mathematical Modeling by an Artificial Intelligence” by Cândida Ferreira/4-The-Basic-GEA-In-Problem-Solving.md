@@ -220,4 +220,7 @@ In summary
 - Not even using XOR a perfect solution was found for 9-exactly 
 - Using lower order as UDFs, we get a much higher better performance 
 
+## Evolving Cellular Automata Rules for Density-Classification Problems
 
+- Density classification task is a challenging problem, and different GAs have been used to try to evolve better than human written rules 
+- GEP found two new rules that are better than human written and better than GAs found  
