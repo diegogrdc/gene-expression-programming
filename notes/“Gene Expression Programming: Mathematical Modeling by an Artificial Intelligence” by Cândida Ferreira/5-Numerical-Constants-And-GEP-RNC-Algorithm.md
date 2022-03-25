@@ -80,13 +80,13 @@
     - For large Dc domains we could increase elements, but even for bigger structures, array of 10 seems to be more than enough 
 
 
-### Performance 
+## Performance 
 
 - Sometimes, inclusion of numerical constants in evolutionary toolkit can result in worse performance 
     - When required constants to solve a problem are small integer constants, evolutionary algorithms find these constants more easily with no a-priori assumptions, as they can create small constants from scratch (like n/n = 1) 
 - Even with better performance without them, some solutions might be slightly worse on the long run without GEP-RNC
 
-### Conclusion
+## Conclusion
 - Before starting modeling process, it is advisable to inquire if numerical constants are essential to design good models
 - When answer is negative, go with simpler system without numerical constants 
     - It allows faster evolution, and allows creation of more and better programs in record time
