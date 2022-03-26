@@ -122,7 +122,7 @@ In summary
 - To design a fitness function with parsimony pressure, we must distinguish raw fitness from overall fitness 
 - Raw fitness involves functions like # of hits, sensitivity/specificity, PPV and NPV 
 - To add parsimony pressure, we can evaluate the following formula 
-    - `f(i) = rf(i) * (1 + 1/5000 + (S_max-S_i) / (S_max - S_min))`
+    - `f(i) = rf(i) * (1 + 1/5000 * (S_max-S_i) / (S_max - S_min))`
     - where `S_i` is size of program, `S_max` and `S_min` represent max and min program sizes, and are evaluated by formulas:
     - `S_max = G(h + t)`
     - `S_min = G`
