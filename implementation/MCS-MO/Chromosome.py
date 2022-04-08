@@ -7,19 +7,19 @@ import numpy as np
 # The expression (evaluation) of these chromosomes is not part of this class
 # Evaluation should be done somewhere else, as this class has no
 # knoledge of functions or terminal meaning
-# Population will keep that logic, as it is the same for all genes in an experiment
+# Population will keep function and terminal logic, as it is the same for all genes in an experiment
 # and it is unnecesary to have functions and terminals stored on each chromosome
 
 
 class Chromosome:
     # Initialization of information of the gene
     # Params:
-    # head_sz = Nnumber of positions used in the head portion of a gene
-    # tail_sz = Number of positions used in the tail portion of a gene
-    # gene_cnt = Number of ADF genes the chromosome will contain
-    # class_cnt = Number of homeotic genes the chromosome will contain
-    # function_count = Number of functions available for this chromosome
-    # terminal_count = Number of terminals available for this chromosome
+    # - head_sz = Nnumber of positions used in the head portion of a gene
+    # - tail_sz = Number of positions used in the tail portion of a gene
+    # - gene_cnt = Number of ADF genes the chromosome will contain
+    # - class_cnt = Number of homeotic genes the chromosome will contain
+    # - function_count = Number of functions available for this chromosome
+    # - terminal_count = Number of terminals available for this chromosome
     def __init__(self, head_sz, tail_sz, gene_cnt, class_cnt, function_count, terminal_count):
         # Head size is usually known as h
         self.h = head_sz
