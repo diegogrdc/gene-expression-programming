@@ -84,7 +84,7 @@ class Population:
     def getBestOfGeneration(self):
         best_fitness = max(self.fitness)
         best_idx = self.fitness.index(best_fitness)
-        return self.population[best_idx]
+        return copy.deepcopy(self.population[best_idx])
 
     # We evaluate fitness for each individual, and keep it stored in
     # self.fitness[] list, so we can use the fitness on the evolutionary process
@@ -104,15 +104,16 @@ class Population:
         # First we need sum of total fitness
         total = sum(self.fitness)
         # Then, we assign roulette vals as needed
-        self.roulette = []
+        roulette = []
         act = 0
-        for i in range(0, self.population):
+        for i in range(0, len(self.population)):
             act = act + self.fitness[i]
-            self.roulette.append(act / total)
+            roulette.append(act / total)
+        return roulette
 
     def getIndividualFromRoulette(self):
         x = np.random.random()
-        for i in range(0, self.population):
+        for i in range(0, len(self.population)):
             if x < self.roulette[i]:
                 return copy.deepcopy(self.population[i])
         return copy.deepcopy(self.population[-1])
