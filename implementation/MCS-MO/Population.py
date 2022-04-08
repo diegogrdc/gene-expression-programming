@@ -61,17 +61,20 @@ class Population:
         # We look for best of generation
         best_fitness = max(self.fitness)
         best_idx = self.fitness.index(best_fitness)
-        # Then we mutate all except best (due to elitism)
-        for idx, ind in enumerate(self.population):
-            # Only if it is best of generation we keep it as it is
-            if idx == best_idx:
-                continue
-            # We need to mutate the chromosome
-            # TODO: Implement Mutation Chromosome
+        # We create a new empty generation
+        new_population = []
+        # We keep the best due to elitism
+        new_population.append(self.population[best_idx])
+        # We need to do pop_sz - 1 new chromosomes
+        # Remember we choose the parent gene with roulette wheel based on fitness
+        # TODO: Implement roulette wheel and use modification class
+        # to modify gene as needed
+        for _ in range(0, self.pop_sz - 1):
             pass
 
     # We evaluate fitness for each individual, and keep it stored in
     # self.fitness[] list, so we can use the fitness on the evolutionary process
+
     def evalFitness(self):
         self.fitness = self.fitness_eval.evaluatePopulationFitness(
             self.population)
