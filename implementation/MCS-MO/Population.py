@@ -62,7 +62,7 @@ class Population:
         best_fitness = max(self.fitness)
         best_idx = self.fitness.index(best_fitness)
         # Then we mutate all except best (due to elitism)
-        for idx, ind in self.population:
+        for idx, ind in enumerate(self.population):
             # Only if it is best of generation we keep it as it is
             if idx == best_idx:
                 continue
