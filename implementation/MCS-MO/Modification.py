@@ -21,7 +21,7 @@ class Modification:
         self.homeotic_IS_transposition_rate = 0.1
         self.homeotic_RIS_transposition_rate = 0.1
 
-    # Implement modifications
+    # TODO: Implement modifications
 
     # Following we have setters for each mutation rate
     # This gives the option to tweak each value as needed
