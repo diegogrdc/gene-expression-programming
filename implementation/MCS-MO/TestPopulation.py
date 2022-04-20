@@ -21,7 +21,7 @@ def div(x, y):
 
 
 def test():
-    fitness_eval = FitnessEvaluator()
+    fitness_eval = FitnessEvaluator('./../training/')
     function_set = [add, sub, mul, div]
     terminal_set = ['a', 'b', 'c', 'd', 'e']
     pop = Population(10, 10, 3, 3, 5, function_set,
