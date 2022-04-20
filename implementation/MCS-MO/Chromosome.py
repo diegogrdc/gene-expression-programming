@@ -49,47 +49,43 @@ class Chromosome:
 
     # Function used to generate a random ADF gene after initialization
     def getRandomADFGene(self):
-        gene = ""
+        gene = []
         # Generate head part of gene
         # Head can have both functions and terminals with equal probability
         for i in range(0, self.h):
-            gene = gene + "." + \
+            gene.append(
                 (self.getRandTerminal() if np.random.random()
-                 < 0.5 else self.getRandFunction())
+                 < 0.5 else self.getRandFunction()))
         # Tail can have only terminals
         for i in range(0, self.t):
-            gene = gene + "." + self.getRandTerminal()
-        # Remove the first dot to have only dots in between
-        gene = gene[1:]
+            gene.append(self.getRandTerminal())
         return gene
 
     # Function used to generate a random Homeotic gene after initialization
     def getRandomHomeoticGene(self):
-        gene = ""
+        gene = []
         # Generate head part of gene
         # Head can have both functions and terminals with equal probability
         for i in range(0, self.h):
-            gene = gene + "." + \
+            gene.append(
                 (self.getRandADF() if np.random.random()
-                 < 0.5 else self.getRandFunction())
+                 < 0.5 else self.getRandFunction()))
         # Tail can have only terminals
         for i in range(0, self.t):
-            gene = gene + "." + self.getRandADF()
-        # Remove the first dot to have only dots in between
-        gene = gene[1:]
+            gene.append(self.getRandADF())
         return gene
 
     # Function used to get a random terminal for an ADF gene
     def getRandTerminal(self):
-        return "t" + str(np.random.randint(0, self.tm_cnt))
+        return ("t", np.random.randint(0, self.tm_cnt))
 
     # Function used to get a random function for any type of gene
     def getRandFunction(self):
-        return "f" + str(np.random.randint(0, self.fn_cnt))
+        return ("f", np.random.randint(0, self.fn_cnt))
 
     # Function used to get a random ADF for a Homeotic gene
     def getRandADF(self):
-        return "a" + str(np.random.randint(0, self.g))
+        return ("a", np.random.randint(0, self.g))
 
     def printChromosome(self):
         print(self.adfs)
