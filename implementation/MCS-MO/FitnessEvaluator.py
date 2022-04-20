@@ -1,4 +1,5 @@
 from Chromosome import Chromosome
+from GeneExpressor import GeneExpressor
 import numpy as np
 import os
 import re
@@ -11,10 +12,12 @@ class FitnessEvaluator:
     # - dir_cases = Directory Where we will find our fitness cases
     def __init__(self, dir_cases, function_set):
         self.dir = dir_cases
-        # Store functions for gene expression
-        self.function_set = function_set
         # We extract all the cases from the directory, and store them
         self.initCases()
+        # Set up gene expression class to deal with
+        # gene expression when needed
+        # We store function set there
+        self.gene_expressor = GeneExpressor(function_set)
 
         # We setup our heuristics
         # This is problem specific
