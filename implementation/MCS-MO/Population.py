@@ -19,9 +19,10 @@ class Population:
     # - class cnt = Number of Homeotic genes of each individual
     # - head_sz = Head size of each gene
     # - Function_set = functions used on gene expression
-    # - terminal_set = terminals used on gene expression
-    # - fitness_eval = FitnessEvaluator that will be used to evaluate individual fitness
-    def __init__(self, generations_cnt, population_sz, gene_cnt, class_cnt, head_sz, function_set, terminal_set_sz, fitness_eval):
+    # - terminal_set_sz = size of set of terminals used on gene expression. This is fixed for all cases
+    # as we need to use the same genes for all cases and we assume same input size
+    # - fitness_dir = Directory of fitness cases used
+    def __init__(self, generations_cnt, population_sz, gene_cnt, class_cnt, head_sz, function_set, terminal_set_sz, fitness_dir):
         # We store number of generations that we will evolve our chromosomes
         self.generations = generations_cnt
         # We store population size
@@ -40,10 +41,9 @@ class Population:
         # We calculate the tail size with the GEP formula
         self.t = self.getTailSize()
         # We store the fitness evaluator
-        # It should already have the fitness cases
-        # and fitness function, so that logic is taken care by it
+        # aso that logic is taken care by it
         # and population just asks for the data
-        self.fitness_eval = fitness_eval
+        self.fitness_eval = FitnessEvaluator(fitness_dir, function_set)
 
         # We generate initial population
         self.population = []

@@ -22,15 +22,8 @@ def div(x, y):
 
 def test():
     function_set = [add, sub, mul, div]
-    terminal_set = ['a', 'b', 'c', 'd', 'e']
-    pop = Population(1, 2, 3, 4, 5, function_set,
-                     len(terminal_set), './../training/')
-    for i, chrom in enumerate(pop.population):
-        print("Individual #", i)
-        chrom.printChromosome()
-        print("")
-
-    pop.run()
+    fitness = FitnessEvaluator('./../training/', function_set)
+    fitness.evaluatePopulationFitness(['p1', 'p2', 'p3', 'p4', 'p5'])
 
 
 test()
