@@ -122,6 +122,10 @@ class FitnessEvaluator:
             # We just check bpp test files
             if not "bpp" in filename:
                 continue
+            # TODO: DELETE THIS
+            # WE SKIP JUST FOR SMALL TESTING PURPOSES
+            if len(self.test_names) > 1:
+                continue
             # Store test name
             self.test_names.append(filename)
             # Get test contents
@@ -154,6 +158,7 @@ class FitnessEvaluator:
     # - ind = Individual chromosome used to evaluate fitness
     # - f = Flag used for printing if necessary
     def evaluateChromosomeFitness(self, ind, f):
+        print("Eval chromosome fitness")  # DEL
         waste = []
         # For each test, we get fitness
         for i in range(0, len(self.test_names)):
@@ -169,6 +174,7 @@ class FitnessEvaluator:
     # In this case we have 20 objects
     # If we change, it does not work
     def evalFitnessCase(self, ind, idx):
+        print("Eval case fitness", idx)  # DEL
         # We setup our "environment"
         # This is the terminals that the problem will use for its expression
         # We have a list of length 24
@@ -205,4 +211,4 @@ class FitnessEvaluator:
     def chooseHeuristic(self, ind, terminals):
         # TODO: IMPLEMENT EXPRESSION AND CONSEQUENT CHOOSE OF HEURISTIC
         # Currently always uses next fit
-        return np.random.randint(0, 4)
+        return self.gene_expressor.express(ind, terminals)
