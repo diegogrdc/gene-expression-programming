@@ -146,6 +146,7 @@ class FitnessEvaluator:
         for ind in population:
             fitness.append(1000 - self.evaluateChromosomeFitness(ind, 0))
         print("Avg fitness are", fitness)
+        print("Best fitness is", max(fitness))
         return fitness
 
     # Evaluates fitness of an individual, by evaluating each one of our

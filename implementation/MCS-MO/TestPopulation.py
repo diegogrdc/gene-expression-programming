@@ -31,7 +31,7 @@ def sqrt(x):
 def test():
     function_set = [add, sub, mul, div, sqrt]
     terminal_set = ['a', 'b', 'c', 'd', 'e']
-    pop = Population(2, 3, 3, 4, 5, function_set,
+    pop = Population(4, 3, 3, 4, 5, function_set,
                      len(terminal_set), './../training/')
     for i, chrom in enumerate(pop.population):
         print("Individual #", i)

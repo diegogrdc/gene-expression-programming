@@ -26,10 +26,12 @@ class Modificator:
         self.gene_recombination_rate = 0.3
 
     # Apply all modifications to the gene
+    # Just individual modifications
+    # as we need two genes for
+    # recombination modifiers
     # it recieves as a parameter
     # - gene = Gene we will modify
     def modify(self, gene):
-        print("Modifying gene", gene)
         self.mutation(gene)
         self.inversion(gene)
         self.ISTransposition(gene)
@@ -40,11 +42,16 @@ class Modificator:
         self.homeoticISTransposition(gene)
         self.homeoticRISTransposition(gene)
 
-        self.onePointRecombination(gene)
-        self.twoPointRecombination(gene)
-        self.gene_recombination(gene)
-
-    # TODO: Implement modifications
+    # Function used to recombine two genes
+    # with the recombination modificatiors we
+    # have selected
+    # - gene1 = First gene of recombination
+    # - gene2 = Second gene of recombination
+    # TODO : Implement recombination
+    def recombine(self, gene1, gene2):
+        self.onePointRecombination(gene1, gene2)
+        self.twoPointRecombination(gene1, gene2)
+        self.gene_recombination(gene1, gene2)
 
     # Mutation implementation
     # Just works on ADF genes
@@ -231,13 +238,13 @@ class Modificator:
         head_sz = gene.h + len(mov)
         gene.genes[idx] = gene.genes[idx][:gene.h] + gene.genes[idx][head_sz:]
 
-    def onePointRecombination(self, gene):
+    def onePointRecombination(self, gene1, gene2):
         pass
 
-    def twoPointRecombination(self, gene):
+    def twoPointRecombination(self, gene1, gene2):
         pass
 
-    def gene_recombination(self, gene):
+    def gene_recombination(self, gene1, gene2):
         pass
 
     # Following we have setters for each mutation rate

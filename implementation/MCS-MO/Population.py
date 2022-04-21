@@ -84,6 +84,9 @@ class Population:
         # We keep the best due to elitism
         new_population.append(self.getBestOfGeneration())
 
+        # Assign our modified population
+        self.population = new_population
+
     # This function gets the best individual in a generation
     # based on the calculated fitness
 
