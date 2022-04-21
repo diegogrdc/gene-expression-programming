@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 # This class takes care of modification for genes
 # It stores parameters for each modification
 # as a rate on how often it will happen
@@ -14,10 +15,10 @@ class Modificator:
         self.inversion_rate = 0.1
         self.IS_transposition_rate = 0.1
         self.RIS_transposition_rate = 0.1
+        self.gene_transposition_rate = 1  # 0.1
         self.one_point_recombination_rate = 0.3
         self.two_point_recombination_rate = 0.3
         self.gene_recombination_rate = 0.3
-        self.gene_transposition_rate = 0.1
         self.homeotic_mutation_rate = 0.044
         self.homeotic_inversion_rate = 0.1
         self.homeotic_IS_transposition_rate = 0.1
@@ -75,11 +76,63 @@ class Modificator:
             # Invert stt and end in idx gene adf
             gene.adfs[idx][stt:end] = gene.adfs[idx][stt:end][::-1]
 
+    # Insertion Sequence (IS)
+    # Transposition implementation
+    # Just works on ADF genes
     def ISTransposition(self, gene):
-        pass
+        # We pick a random adf
+        # start, end
+        # and pos to insert
+        idx = np.random.randint(0, gene.g)
+        stt = np.random.randint(0, gene.sz)
+        end = np.random.randint(stt, gene.sz)
+        pos = np.random.randint(1, gene.h)
+        # End is exclusive, so we add one
+        end = end + 1
+        # Create new mov sublist
+        mov = copy.deepcopy(gene.adfs[idx][stt:end])
+        # Add new part to chromosome
+        gene.adfs[idx] = gene.adfs[idx][:pos] + mov + gene.adfs[idx][pos:]
+        # Delete extra part from head
+        head_sz = gene.h + len(mov)
+        gene.adfs[idx] = gene.adfs[idx][:gene.h] + gene.adfs[idx][head_sz:]
 
+    # Root Insertion Sequence (RIS)
+    # Transposition implementation
+    # Just works on ADF genes
     def RISTransposition(self, gene):
-        pass
+        # We pick a random adf
+        # start, end,
+        # making sure start is a function
+        idx = np.random.randint(0, gene.g)
+        # Choose start and move until a function is found
+        stt = np.random.randint(0, gene.h)
+        while stt < gene.h and gene.adfs[idx][stt][0] != 'f':
+            stt = stt + 1
+        # If function was not found, do nothing
+        if stt == gene.h:
+            return
+        end = np.random.randint(stt, gene.sz)
+        # End is exclusive, so we add one
+        end = end + 1
+        # Create new mov sublist
+        mov = copy.deepcopy(gene.adfs[idx][stt:end])
+        # Add new part to chromosome at beginning
+        gene.adfs[idx] = mov + gene.adfs[idx]
+        # Delete extra part from head
+        head_sz = gene.h + len(mov)
+        gene.adfs[idx] = gene.adfs[idx][:gene.h] + gene.adfs[idx][head_sz:]
+
+    # Gene Transposition implementation
+    # Just works on ADF genes
+    def gene_transposition(self, gene):
+        # Pick a gene to move
+        idx = np.random.randint(0, gene.g)
+        print("Transpose", idx)
+        print(gene.adfs)
+        mov = gene.adfs.pop(idx)
+        gene.adfs.insert(0, mov)
+        print(gene.adfs)
 
     def onePointRecombination(self, gene):
         pass
@@ -88,9 +141,6 @@ class Modificator:
         pass
 
     def gene_recombination(self, gene):
-        pass
-
-    def gene_transposition(self, gene):
         pass
 
     def homeoticMutation(self, gene):

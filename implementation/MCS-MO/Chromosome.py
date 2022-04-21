@@ -25,6 +25,8 @@ class Chromosome:
         self.h = head_sz
         # Tail size is usually known as t
         self.t = tail_sz
+        # Size is stored as h + t
+        self.sz = self.h + self.t
         # As a Multicellular chromosome, it has multiple genes that will work as ADFs
         self.g = gene_cnt
         # As a Multicellular chromosome, it has multiple genes
