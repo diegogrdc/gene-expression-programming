@@ -122,4 +122,5 @@ class Population:
     # t = h * (n_max - 1) + 1
     # where n_max is the max number of params used in any function
     def getTailSize(self):
-        return max(list(map(lambda fn: fn.__code__.co_argcount, self.fn_set)))
+        n_max = max(list(map(lambda fn: fn.__code__.co_argcount, self.fn_set)))
+        return self.h * (n_max - 1) + 1

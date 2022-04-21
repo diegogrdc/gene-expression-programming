@@ -92,4 +92,4 @@ class Chromosome:
         print(self.genes)
 
     def __str__(self):
-        return "\n    GENES: {}\n    ADFS:{}".format(self.adfs, self.genes)
+        return "\n    GENES: {}\n    ADFS:{}".format(self.genes, self.adfs)

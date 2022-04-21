@@ -151,6 +151,7 @@ class FitnessEvaluator:
             waste.append(self.evaluateChromosomeFitness(ind, 0))
         # Get max waste to normalize fitness
         mxwaste = max(waste)
+        mxwaste = max(mxwaste, 0.001)
         return list(map(lambda x: 1 - (x / mxwaste) + 0.1, waste))
 
     # Evaluates fitness of an individual, by evaluating each one of our
@@ -158,7 +159,6 @@ class FitnessEvaluator:
     # - ind = Individual chromosome used to evaluate fitness
     # - f = Flag used for printing if necessary
     def evaluateChromosomeFitness(self, ind, f):
-        print("Eval chromosome fitness")  # DEL
         waste = []
         # For each test, we get fitness
         for i in range(0, len(self.test_names)):
@@ -174,7 +174,6 @@ class FitnessEvaluator:
     # In this case we have 20 objects
     # If we change, it does not work
     def evalFitnessCase(self, ind, idx):
-        print("Eval case fitness", idx)  # DEL
         # We setup our "environment"
         # This is the terminals that the problem will use for its expression
         # We have a list of length 24
@@ -208,7 +207,16 @@ class FitnessEvaluator:
 
         return waste
 
+    # This function calls the gene expressor
+    # to express our gene and get the chosen
+    # heuristic to follow up the problem
+    # - ind = Gene we will express
+    # with its adfs and homeotic genes
+    # - terminals = Set of terminals
+    # used in this state of problem
     def chooseHeuristic(self, ind, terminals):
-        # TODO: IMPLEMENT EXPRESSION AND CONSEQUENT CHOOSE OF HEURISTIC
-        # Currently always uses next fit
-        return self.gene_expressor.express(ind, terminals)
+        # Get a prediction val for each class
+        heuristics = self.gene_expressor.express(ind, terminals)
+        # Return best heuristic
+        chosen = np.argmax(heuristics)
+        return chosen

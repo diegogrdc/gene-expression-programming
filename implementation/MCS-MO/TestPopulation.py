@@ -17,11 +17,19 @@ def mul(x, y):
 
 
 def div(x, y):
+    if y == 0:
+        return 0
     return x / y
 
 
+def sqrt(x):
+    if x < 0:
+        return 0
+    return math.sqrt(x)
+
+
 def test():
-    function_set = [add, sub, mul, div]
+    function_set = [add, sub, mul, div, sqrt]
     terminal_set = ['a', 'b', 'c', 'd', 'e']
     pop = Population(1, 2, 3, 4, 5, function_set,
                      len(terminal_set), './../training/')
