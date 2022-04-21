@@ -53,13 +53,21 @@ class Chromosome:
         # Generate head part of gene
         # Head can have both functions and terminals with equal probability
         for i in range(0, self.h):
-            gene.append(
-                (self.getRandTerminal() if np.random.random()
-                 < 0.5 else self.getRandFunction()))
+            gene.append(self.getRandTerminalOrFunction())
         # Tail can have only terminals
         for i in range(0, self.t):
             gene.append(self.getRandTerminal())
         return gene
+
+    # Get terminal or function equiprobably
+    def getRandTerminalOrFunction(self):
+        return (self.getRandTerminal() if np.random.random()
+                < 0.5 else self.getRandFunction())
+
+    # Get ADF or function equiprobably
+    def getRandADFOrFunction(self):
+        return (self.getRandADF() if np.random.random()
+                < 0.5 else self.getRandFunction())
 
     # Function used to generate a random Homeotic gene after initialization
     def getRandomHomeoticGene(self):
@@ -67,9 +75,7 @@ class Chromosome:
         # Generate head part of gene
         # Head can have both functions and terminals with equal probability
         for i in range(0, self.h):
-            gene.append(
-                (self.getRandADF() if np.random.random()
-                 < 0.5 else self.getRandFunction()))
+            gene.append(self.getRandADFOrFunction())
         # Tail can have only terminals
         for i in range(0, self.t):
             gene.append(self.getRandADF())

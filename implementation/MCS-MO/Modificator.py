@@ -1,7 +1,9 @@
+import numpy as np
 # This class takes care of modification for genes
 # It stores parameters for each modification
 # as a rate on how often it will happen
 # And implements modifications itself
+
 
 class Modificator:
     # Initialize modification class
@@ -40,12 +42,38 @@ class Modificator:
         self.homeoticRISTransposition(gene)
 
     # TODO: Implement modifications
-    def mutation(self, gene):
-        print("Mutating gene", gene)  # DEL
-        pass
 
+    # Mutation implementation
+    # Just works on ADF genes
+    def mutation(self, gene):
+        # For each ADF gene
+        for ind in gene.adfs:
+            # We check all positions
+            for i in range(0, len(ind)):
+                # If random passes
+                if np.random.rand() < self.mutation_rate:
+                    # If in head we can do functions
+                    if i < gene.h:
+                        ind[i] = gene.getRandTerminalOrFunction()
+                    # If in tail, just terminals
+                    else:
+                        ind[i] = gene.getRandTerminal()
+
+    # Inversion implementation
+    # Just works on ADF genes
     def inversion(self, gene):
-        pass
+        # If random passes
+        if np.random.rand() < self.inversion_rate:
+            # Choose random adf, and starting
+            # and end point to invert
+            # only in the head portion
+            idx = np.random.randint(0, gene.g)
+            stt = np.random.randint(0, gene.h)
+            end = np.random.randint(stt, gene.h)
+            # End is exclusive, so we add one
+            end = end + 1
+            # Invert stt and end in idx gene adf
+            gene.adfs[idx][stt:end] = gene.adfs[idx][stt:end][::-1]
 
     def ISTransposition(self, gene):
         pass

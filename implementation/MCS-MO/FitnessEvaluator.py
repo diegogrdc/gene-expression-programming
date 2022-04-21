@@ -122,10 +122,6 @@ class FitnessEvaluator:
             # We just check bpp test files
             if not "bpp" in filename:
                 continue
-            # TODO: DELETE THIS
-            # WE SKIP JUST FOR SMALL TESTING PURPOSES
-            if len(self.test_names) > 1:
-                continue
             # Store test name
             self.test_names.append(filename)
             # Get test contents
