@@ -68,17 +68,21 @@ class Population:
         self.evalFitness()
         # We create a new empty generation
         new_population = []
-        # We keep the best due to elitism
-        new_population.append(self.getBestOfGeneration())
 
-        # We need to create another (pop_sz - 1) new chromosomes
-        # Remember we choose the parent gene with roulette wheel based on fitness
         # Create a modificator
         modifier = Modificator()
+        # We need to create another (pop_sz - 1) new chromosomes
+        # Remember we choose the parent gene with roulette wheel based on fitness
         for _ in range(0, self.pop_sz - 1):
             # We get a parent to replicate from the roulette
             ind = self.getIndividualFromRoulette()
+            # We modify the individual before adding to new population
             modifier.modify(ind)
+            new_population.append(ind)
+
+        # At last
+        # We keep the best due to elitism
+        new_population.append(self.getBestOfGeneration())
 
     # This function gets the best individual in a generation
     # based on the calculated fitness
