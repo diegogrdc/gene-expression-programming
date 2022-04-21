@@ -1,4 +1,5 @@
 from Chromosome import Chromosome
+from Modificator import Modificator
 from FitnessEvaluator import FitnessEvaluator
 import numpy as np
 import copy
@@ -65,7 +66,6 @@ class Population:
         # It is stored in self.fitness list
         # It also creates the fitness roulettes
         self.evalFitness()
-
         # We create a new empty generation
         new_population = []
         # We keep the best due to elitism
@@ -73,10 +73,12 @@ class Population:
 
         # We need to create another (pop_sz - 1) new chromosomes
         # Remember we choose the parent gene with roulette wheel based on fitness
+        # Create a modificator
+        modifier = Modificator()
         for _ in range(0, self.pop_sz - 1):
             # We get a parent to replicate from the roulette
             ind = self.getIndividualFromRoulette()
-            # TODO: IMPLEMENT MODIFICATIONS
+            modifier.modify(ind)
 
     # This function gets the best individual in a generation
     # based on the calculated fitness

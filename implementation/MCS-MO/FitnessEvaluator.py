@@ -146,13 +146,11 @@ class FitnessEvaluator:
     # chromosome generated in process
     # Return values obtained in a list
     def evaluatePopulationFitness(self, population):
-        waste = []
+        fitness = []
         for ind in population:
-            waste.append(self.evaluateChromosomeFitness(ind, 0))
-        # Get max waste to normalize fitness
-        mxwaste = max(waste)
-        mxwaste = max(mxwaste, 0.001)
-        return list(map(lambda x: 1 - (x / mxwaste) + 0.1, waste))
+            fitness.append(1000 - self.evaluateChromosomeFitness(ind, 0))
+        print("Avg fitness are", fitness)
+        return fitness
 
     # Evaluates fitness of an individual, by evaluating each one of our
     # test cases, and getting and average of evaluations
