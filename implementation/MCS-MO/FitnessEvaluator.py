@@ -7,9 +7,9 @@ import re
 
 class FitnessEvaluator:
     # We initialize the fitness evaluator
-    # TODO: Add correct parameters
-    # Params
     # - dir_cases = Directory Where we will find our fitness cases
+    # - function_set = Functions that will be used for expression
+    # Given by the user
     def __init__(self, dir_cases, function_set):
         self.dir = dir_cases
         # We extract all the cases from the directory, and store them

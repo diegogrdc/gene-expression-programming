@@ -13,7 +13,6 @@ class GeneExpressor:
     # - gene = Gene to express (list)
     # - terminals = Terminal values used on this expression
     def express(self, gene, terminals):
-        print("Expressing Gene", gene)  # DEL
         # We first need to express all ADFS and get
         # their vals in case we need them on the home-
         # otic evaluation
