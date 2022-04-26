@@ -27,7 +27,7 @@ def main():
     adf_gene_cnt = 6
     class_cnt = 4
     pop = Population(generations, population_size, adf_gene_cnt, class_cnt, 24, function_set,
-                     terminal_set_sz, './../training/')
+                     terminal_set_sz, './../training/', './../testing/')
 
     pop.run()
 

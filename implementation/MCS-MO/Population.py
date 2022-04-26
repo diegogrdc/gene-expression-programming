@@ -23,7 +23,8 @@ class Population:
     # - terminal_set_sz = size of set of terminals used on gene expression. This is fixed for all cases
     # as we need to use the same genes for all cases and we assume same input size
     # - fitness_dir = Directory of fitness cases used
-    def __init__(self, generations_cnt, population_sz, gene_cnt, class_cnt, head_sz, function_set, terminal_set_sz, fitness_dir):
+    # - testing_dir = Directory of test cases used
+    def __init__(self, generations_cnt, population_sz, gene_cnt, class_cnt, head_sz, function_set, terminal_set_sz, fitness_dir, testing_dir):
         # We store number of generations that we will evolve our chromosomes
         self.generations = generations_cnt
         # We store population size
@@ -44,7 +45,8 @@ class Population:
         # We store the fitness evaluator
         # aso that logic is taken care by it
         # and population just asks for the data
-        self.fitness_eval = FitnessEvaluator(fitness_dir, function_set)
+        self.fitness_eval = FitnessEvaluator(
+            fitness_dir, testing_dir, function_set)
 
         # We generate initial population
         self.population = []
@@ -102,7 +104,7 @@ class Population:
     # and stores it in self.roulette
     def evalFitness(self):
         self.fitness = self.fitness_eval.evaluatePopulationFitness(
-            self.population)
+            self.population, True)
         self.roulette = self.getFitnessRoulette()
 
     # We generate the fitness roulette

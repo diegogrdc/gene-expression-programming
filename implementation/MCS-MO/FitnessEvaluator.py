@@ -8,12 +8,17 @@ import re
 class FitnessEvaluator:
     # We initialize the fitness evaluator
     # - dir_cases = Directory Where we will find our fitness cases
+    # - dir_test_cases = Directory Where we will find our test cases
     # - function_set = Functions that will be used for expression
     # Given by the user
-    def __init__(self, dir_cases, function_set):
+    def __init__(self, dir_cases, dir_test_cases, function_set):
         self.dir = dir_cases
+        self.test_dir = dir_test_cases
         # We extract all the cases from the directory, and store them
-        self.initCases()
+        self.initTrainingCases()
+        self.initTestCases()
+        print(self.train_names)
+        print(self.test_names)
         # Set up gene expression class to deal with
         # gene expression when needed
         # We store function set there
@@ -107,8 +112,7 @@ class FitnessEvaluator:
     # With directory name, we store all our fitness cases
     # NOTE: This is specific to the problem, this should change
     # in a different problem if needed
-
-    def initCases(self):
+    def initTestCases(self):
         # This will contain test names
         self.test_names = []
         # This will contain test size n, number of objects
@@ -118,7 +122,7 @@ class FitnessEvaluator:
         # This will contain test object values for each test
         self.test_objs = []
         # Iterate over every file in our directory
-        for filename in os.listdir(self.dir):
+        for filename in os.listdir(self.test_dir):
             # We just check bpp test files
             if not "bpp" in filename:
                 continue
@@ -137,14 +141,48 @@ class FitnessEvaluator:
             # Make sure tests are ok, n == total objs
             assert(nums[0] == len(nums[2:]))
 
+    # With directory name, we store all our fitness cases
+    # NOTE: This is specific to the problem, this should change
+    # in a different problem if needed
+    def initTrainingCases(self):
+        # This will contain test names
+        self.train_names = []
+        # This will contain test size n, number of objects
+        self.train_n = []
+        # This will contain test val c, capacity of bins
+        self.train_c = []
+        # This will contain test object values for each test
+        self.train_objs = []
+        # Iterate over every file in our directory
+        for filename in os.listdir(self.dir):
+            # We just check bpp test files
+            if not "bpp" in filename:
+                continue
+            # Store test name
+            self.train_names.append(filename)
+            # Get test contents
+            file = open(self.dir + filename, 'r')
+            content = file.read()
+            # Parse contents and store them in list as ints
+            nums = re.findall(r'\d+', content)
+            nums = list(map(int, nums))
+            # Store relevant information
+            self.train_n.append(nums[0])
+            self.train_c.append(nums[1])
+            self.train_objs.append(nums[2:])
+            # Make sure tests are ok, n == total objs
+            assert(nums[0] == len(nums[2:]))
+
     # Function to evaluate the fitness of a specific population
     # - population = List with Population, each element representing a
+    # - trainf = Flag used to determine test or train set
     # chromosome generated in process
     # Return values obtained in a list
-    def evaluatePopulationFitness(self, population):
+    def evaluatePopulationFitness(self, population, trainf):
         fitness = []
         for ind in population:
-            fitness.append(1000 - self.evaluateChromosomeFitness(ind, 0))
+            fitness.append(
+                1000 - self.evaluateChromosomeFitness(ind, 0, trainf))
         print("Avg fitness are", fitness)
         print("Best fitness is", max(fitness))
         return fitness
@@ -153,22 +191,29 @@ class FitnessEvaluator:
     # test cases, and getting and average of evaluations
     # - ind = Individual chromosome used to evaluate fitness
     # - f = Flag used for printing if necessary
-    def evaluateChromosomeFitness(self, ind, f):
+    # - trainf = Flag used to determine test or train set
+    def evaluateChromosomeFitness(self, ind, f, trainf):
         waste = []
         # For each test, we get fitness
-        for i in range(0, len(self.test_names)):
-            waste.append(self.evalFitnessCase(ind, i))
+        names = self.train_names if trainf else self.test_names
+        for i in range(0, len(names)):
+            waste.append(self.evalFitnessCase(ind, i, trainf))
         avgwaste = sum(waste) / len(waste)
         return avgwaste
 
     # Evaluate a chromosome in a specific test
     # - ind = Individual chromosome used to evaluate fitness
     # - idx = Index of test used
+    # - trainf = Flag used to determine test or train set
     # This function is also specific to the problem in hand
     # It needs for test cases to all have the same size
     # In this case we have 20 objects
     # If we change, it does not work
-    def evalFitnessCase(self, ind, idx):
+    def evalFitnessCase(self, ind, idx, trainf):
+        # Get our data (test or train)
+        n = self.train_n if trainf else self.test_n
+        c = self.train_c if trainf else self.test_c
+        objs = self.train_objs if trainf else self.test_objs
         # We setup our "environment"
         # This is the terminals that the problem will use for its expression
         # We have a list of length 24
@@ -176,13 +221,13 @@ class FitnessEvaluator:
         # Second element is C
         # Third element is current # of bins used
         # Fourth element is arriving object weigth
-        terminals = [self.test_n[idx], self.test_c[idx], 1, 0]
+        terminals = [n[idx], c[idx], 1, 0]
         # Next 20 elements are the N possible bins we can have at the end
         # each with its current occupancy
-        terminals.extend([0] * self.test_n[idx])
+        terminals.extend([0] * n[idx])
 
         # Now we simulate each items arrival
-        for item in self.test_objs[idx]:
+        for item in objs[idx]:
             # Update terminals with given object
             terminals[3] = item
 
