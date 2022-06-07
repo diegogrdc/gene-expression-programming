@@ -19,11 +19,14 @@ class Modificator:
         self.homeotic_mutation_rate = 0.044
         self.homeotic_inversion_rate = 0.1
         self.homeotic_IS_transposition_rate = 0.1
-        self.homeotic_RIS_transposition_rate = 1  # 0.1
+        self.homeotic_RIS_transposition_rate = 0.1
 
-        self.one_point_recombination_rate = 0.3
-        self.two_point_recombination_rate = 0.3
-        self.gene_recombination_rate = 0.3
+        self.one_point_recombination_rate = 0.8
+        self.two_point_recombination_rate = 0.8
+        self.gene_recombination_rate = 0.8
+        self.homeotic_one_point_recombination_rate = 0.8
+        self.homeotic_two_point_recombination_rate = 0.8
+        self.homeotic_gene_recombination_rate = 0.8
 
     # Apply all modifications to the gene
     # Just individual modifications
@@ -51,7 +54,10 @@ class Modificator:
     def recombine(self, gene1, gene2):
         self.onePointRecombination(gene1, gene2)
         self.twoPointRecombination(gene1, gene2)
-        self.gene_recombination(gene1, gene2)
+        self.geneRecombination(gene1, gene2)
+        self.homeoticOnePointRecombination(gene1, gene2)
+        self.homeoticTwoPointRecombination(gene1, gene2)
+        self.homeoticGeneRecombination(gene1, gene2)
 
     # Mutation implementation
     # Just works on ADF genes
@@ -239,13 +245,94 @@ class Modificator:
         gene.genes[idx] = gene.genes[idx][:gene.h] + gene.genes[idx][head_sz:]
 
     def onePointRecombination(self, gene1, gene2):
-        pass
+        # If random not passes we return
+        if np.random.rand() >= self.one_point_recombination_rate:
+            return
+        # Choose random adf, and point
+        # of recombination
+        idx = np.random.randint(0, gene1.g)
+        pt = np.random.randint(0, gene1.sz)
+        # Recombine
+        nwadf1 = gene1.adfs[idx][:pt] + gene2.adfs[idx][pt:]
+        nwadf2 = gene2.adfs[idx][:pt] + gene1.adfs[idx][pt:]
+        gene1.adfs[idx] = nwadf1
+        gene2.adfs[idx] = nwadf2
 
     def twoPointRecombination(self, gene1, gene2):
-        pass
+        # If random not passes we return
+        if np.random.rand() >= self.two_point_recombination_rate:
+            return
+        # Choose random adf, and two points
+        # of recombination
+        idx = np.random.randint(0, gene1.g)
+        pt1 = np.random.randint(0, gene1.sz - 1)
+        pt2 = np.random.randint(pt1, gene1.sz)
+        # Recombine
+        nwadf1 = gene1.adfs[idx][:pt1] + \
+            gene2.adfs[idx][pt1:pt2] + gene1.adfs[idx][pt2:]
+        nwadf2 = gene2.adfs[idx][:pt1] + \
+            gene1.adfs[idx][pt1:pt2] + gene2.adfs[idx][pt2:]
+        gene1.adfs[idx] = nwadf1
+        gene2.adfs[idx] = nwadf2
 
-    def gene_recombination(self, gene1, gene2):
-        pass
+    def geneRecombination(self, gene1, gene2):
+        # If random not passes we return
+        if np.random.rand() >= self.gene_recombination_rate:
+            return
+        # Choose random and point
+        # of recombination in gene length
+        pt = np.random.randint(0, gene1.g)
+        pt = 1
+        # Recombine
+        nwadfs1 = gene1.adfs[:pt] + gene2.adfs[pt:]
+        nwadfs2 = gene2.adfs[:pt] + gene1.adfs[pt:]
+        gene1.adfs = nwadfs1
+        gene2.adfs = nwadfs2
+
+    def homeoticOnePointRecombination(self, gene1, gene2):
+        # If random not passes we return
+        if np.random.rand() >= self.one_point_recombination_rate:
+            return
+        # Choose random gene, and point
+        # of recombination
+        idx = np.random.randint(0, gene1.c)
+        pt = np.random.randint(0, gene1.sz)
+        # Recombine
+        nwgene1 = gene1.genes[idx][:pt] + gene2.genes[idx][pt:]
+        nwgene2 = gene2.genes[idx][:pt] + gene1.genes[idx][pt:]
+        gene1.genes[idx] = nwgene1
+        gene2.genes[idx] = nwgene2
+
+    def homeoticTwoPointRecombination(self, gene1, gene2):
+        # If random not passes we return
+        if np.random.rand() >= self.two_point_recombination_rate:
+            return
+        # Choose random gene, and two points
+        # of recombination
+        idx = np.random.randint(0, gene1.c)
+        pt1 = np.random.randint(0, gene1.sz - 1)
+        pt2 = np.random.randint(pt1, gene1.sz)
+        # Recombine
+        nwgene1 = gene1.genes[idx][:pt1] + \
+            gene2.genes[idx][pt1:pt2] + gene1.genes[idx][pt2:]
+        nwgene2 = gene2.genes[idx][:pt1] + \
+            gene1.genes[idx][pt1:pt2] + gene2.genes[idx][pt2:]
+        gene1.genes[idx] = nwgene1
+        gene2.genes[idx] = nwgene2
+
+    def homeoticGeneRecombination(self, gene1, gene2):
+        # If random not passes we return
+        if np.random.rand() >= self.gene_recombination_rate:
+            return
+        # Choose random and point
+        # of recombination in gene length
+        pt = np.random.randint(0, gene1.c)
+        pt = 1
+        # Recombine
+        nwgenes1 = gene1.genes[:pt] + gene2.genes[pt:]
+        nwgenes2 = gene2.genes[:pt] + gene1.genes[pt:]
+        gene1.genes = nwgenes1
+        gene2.genes = nwgenes2
 
     # Following we have setters for each mutation rate
     # This gives the option to tweak each value as needed
@@ -260,54 +347,69 @@ class Modificator:
     # Set Rate of Inversion
     # - rate = new rate
     def setInversionRate(self, rate):
-        self.inversion_rate = 0.1
+        self.inversion_rate = rate
 
     # Set Rate of IS Transposition
     # - rate = new rate
     def setISTranspositionRate(self, rate):
-        self.IS_transposition_rate = 0.1
+        self.IS_transposition_rate = rate
 
     # Set Rate of RIS Transposition
     # - rate = new rate
     def setRISTranspositionRate(self, rate):
-        self.RIS_transposition_rate = 0.1
-
-    # Set Rate of One Point Recombination
-    # - rate = new rate
-    def setOnePointRecombinationRate(self, rate):
-        self.one_point_recombination_rate = 0.3
-
-    # Set Rate of Two Point Recombination
-    # - rate = new rate
-    def setTwoPointRecombinationRate(self, rate):
-        self.two_point_recombination_rate = 0.3
-
-    # Set Rate of Gene Recombination
-    # - rate = new rate
-    def setGeneRecombinationRate(self, rate):
-        self.gene_recombination_rate = 0.3
+        self.RIS_transposition_rate = rate
 
     # Set Rate of Gene Transposition
     # - rate = new rate
     def setGeneTranspositionRate(self, rate):
-        self.gene_transposition_rate = 0.1
+        self.gene_transposition_rate = rate
 
     # Set Rate of Homeotic Mutation
     # - rate = new rate
     def setHomeoticMutationRate(self, rate):
-        self.homeotic_mutation_rate = 0.044
+        self.homeotic_mutation_rate = rate
 
     # Set Rate of Homeotic Inversion
     # - rate = new rate
     def setHomeoticInversionRate(self, rate):
-        self.homeotic_inversion_rate = 0.1
+        self.homeotic_inversion_rate = rate
 
     # Set Rate of Homeotic IS Transposition
     # - rate = new rate
     def setHomeoticISTranspositionRate(self, rate):
-        self.homeotic_IS_transposition_rate = 0.1
+        self.homeotic_IS_transposition_rate = rate
 
     # Set Rate of Homeotic RIS Transposition
     # - rate = new rate
     def setHomeoticRISTranspositionRate(self, rate):
-        self.homeotic_RIS_transposition_rate = 0.1
+        self.homeotic_RIS_transposition_rate = rate
+
+    # Set Rate of One Point Recombination
+    # - rate = new rate
+    def setOnePointRecombinationRate(self, rate):
+        self.one_point_recombination_rate = rate
+
+    # Set Rate of Two Point Recombination
+    # - rate = new rate
+    def setTwoPointRecombinationRate(self, rate):
+        self.two_point_recombination_rate = rate
+
+    # Set Rate of Gene Recombination
+    # - rate = new rate
+    def setGeneRecombinationRate(self, rate):
+        self.gene_recombination_rate = rate
+
+    # Set Rate of Homeotic One Point Recombination
+    # - rate = new rate
+    def setHomeoticOnePointRecombinationRate(self, rate):
+        self.homeotic_one_point_recombination_rate = rate
+
+    # Set Rate of Homeotic Two Point Recombination
+    # - rate = new rate
+    def setHomeoticTwoPointRecombinationRate(self, rate):
+        self.homeotic_two_point_recombination_rate = rate
+
+    # Set Rate of Homeotic Gene Recombination
+    # - rate = new rate
+    def setHomeoticGeneRecombinationRate(self, rate):
+        self.homeotic_gene_recombination_rate = rate

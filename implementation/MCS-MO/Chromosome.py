@@ -36,6 +36,9 @@ class Chromosome:
         self.fn_cnt = function_count
         # We need to store terminal count to generate the chromosome (t0, t1, t2, t3, etc)
         self.tm_cnt = terminal_count
+        # We will only express relevant terminals, so we store a #
+        # to know which terminals we care about
+        self.impt_tm_cnt = 4
 
         # We generate an initial random Chromosome
         # First we generate the regular ADF genes
@@ -85,7 +88,7 @@ class Chromosome:
 
     # Function used to get a random terminal for an ADF gene
     def getRandTerminal(self):
-        return ("t", np.random.randint(0, self.tm_cnt))
+        return ("t", np.random.randint(0, self.impt_tm_cnt))
 
     # Function used to get a random function for any type of gene
     def getRandFunction(self):

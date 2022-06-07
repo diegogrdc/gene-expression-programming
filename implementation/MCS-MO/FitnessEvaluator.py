@@ -1,8 +1,12 @@
 from Chromosome import Chromosome
 from GeneExpressor import GeneExpressor
 import numpy as np
+from openpyxl import Workbook, load_workbook
+from datetime import datetime
+from os.path import exists
 import os
 import re
+import pickle
 
 
 class FitnessEvaluator:
@@ -12,13 +16,11 @@ class FitnessEvaluator:
     # - function_set = Functions that will be used for expression
     # Given by the user
     def __init__(self, dir_cases, dir_test_cases, function_set):
-        self.dir = dir_cases
+        self.training_dir = dir_cases
         self.test_dir = dir_test_cases
         # We extract all the cases from the directory, and store them
         self.initTrainingCases()
         self.initTestCases()
-        print(self.train_names)
-        print(self.test_names)
         # Set up gene expression class to deal with
         # gene expression when needed
         # We store function set there
@@ -27,20 +29,46 @@ class FitnessEvaluator:
         # We setup our heuristics
         # This is problem specific
         # In this case we have four
+        # TODO UNCOMMENT
         self.heuristics = [self.heuristic_next_fit, self.heuristic_first_fit,
                            self.heuristic_best_fit, self.heuristic_worst_fit]
+        # Setup excel stuff
+        self.setUpExcel()
 
-    # Following we have the 4 heuristics used
-    # Each recieves
-    # - terminals = The terminals that represent
-    # the current state of the problem
-    # They update thee problem as needed
+    # Open excel worsheet to setup data after we finish testing, to store
+    # results for simple heuristics, and then update with our best tests as needed
+    def setUpExcel(self):
+        if exists('ResHWF.xlsx'):
+            self.workbook = load_workbook('ResHWF.xlsx')
+            self.worksheet = self.workbook['Results']
+        else:
+            self.workbook = Workbook()
+            self.workbook.create_sheet("Results")
+            self.worksheet = self.workbook['Results']
+            # If first time, setup simple heuristics and names
+            # Set Titles
+            self.worksheet.cell(2, 1, "Test Names")
+            self.worksheet.cell(2, 2, "Next Fit")
+            self.worksheet.cell(2, 3, "First Fit")
+            self.worksheet.cell(2, 4, "Best Fit")
+            self.worksheet.cell(2, 5, "Worst Fit")
+            for i in range(0, len(self.test_names)):
+                # Set test names in col 1
+                self.worksheet.cell(3 + i, 1, self.test_names[i])
+                # Set heuristic 0 in col 2
+                res = 1000 - self.evalFitnessCase([], i, False, 0)
+                self.worksheet.cell(3 + i, 2, res)
+                # Set heuristic 1 in col 3
+                res = 1000 - self.evalFitnessCase([], i, False, 1)
+                self.worksheet.cell(3 + i, 3, res)
+                # Set heuristic 2 in col 4
+                res = 1000 - self.evalFitnessCase([], i, False, 2)
+                self.worksheet.cell(3 + i, 4, res)
+                # Set heuristic 3 in col 5
+                res = 1000 - self.evalFitnessCase([], i, False, 3)
+                self.worksheet.cell(3 + i, 5, res)
+            self.workbook.save('ResHWF.xlsx')
 
-    # Remember structure of terminals in a 24 size array
-    # [N, C, # of bins, curr obj, 20 possible bins]
-
-    # Consider current bin. If object fits, insert, else
-    # add a new bin and insert
     def heuristic_next_fit(self, terminals):
         # Get last bin
         # + 4 to adjust as we have 4 nums unrelated before
@@ -129,7 +157,7 @@ class FitnessEvaluator:
             # Store test name
             self.test_names.append(filename)
             # Get test contents
-            file = open(self.dir + filename, 'r')
+            file = open(self.test_dir + filename, 'r')
             content = file.read()
             # Parse contents and store them in list as ints
             nums = re.findall(r'\d+', content)
@@ -154,14 +182,14 @@ class FitnessEvaluator:
         # This will contain test object values for each test
         self.train_objs = []
         # Iterate over every file in our directory
-        for filename in os.listdir(self.dir):
+        for filename in os.listdir(self.training_dir):
             # We just check bpp test files
             if not "bpp" in filename:
                 continue
             # Store test name
             self.train_names.append(filename)
             # Get test contents
-            file = open(self.dir + filename, 'r')
+            file = open(self.training_dir + filename, 'r')
             content = file.read()
             # Parse contents and store them in list as ints
             nums = re.findall(r'\d+', content)
@@ -182,24 +210,44 @@ class FitnessEvaluator:
         fitness = []
         for ind in population:
             fitness.append(
-                1000 - self.evaluateChromosomeFitness(ind, 0, trainf))
+                1000 - self.evaluateChromosomeFitness(ind, 0, trainf, None))
         print("Avg fitness are", fitness)
         print("Best fitness is", max(fitness))
+        self.storePopulation(population)
         return fitness
+
+    # Using pickle to store population and not start
+    # from 0 every time
+    def storePopulation(self, population):
+        filename = 'best_store.txt'
+        outfile = open(filename, 'wb')
+        pickle.dump(population, outfile)
+        outfile.close()
 
     # Evaluates fitness of an individual, by evaluating each one of our
     # test cases, and getting and average of evaluations
     # - ind = Individual chromosome used to evaluate fitness
     # - f = Flag used for printing if necessary
     # - trainf = Flag used to determine test or train set
-    def evaluateChromosomeFitness(self, ind, f, trainf):
+    def evaluateChromosomeFitness(self, ind, f, trainf, heuristic):
         waste = []
         # For each test, we get fitness
         names = self.train_names if trainf else self.test_names
         for i in range(0, len(names)):
-            waste.append(self.evalFitnessCase(ind, i, trainf))
+            waste.append(self.evalFitnessCase(ind, i, trainf, heuristic))
         avgwaste = sum(waste) / len(waste)
-        return avgwaste
+        if trainf:
+            return avgwaste
+        return waste
+
+    def writeTestResult(self, ind, waste, col):
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        self.worksheet.cell(2, col, "GEP Exp" + dt_string)
+        for i in range(0, len(self.test_names)):
+            self.worksheet.cell(3 + i, col, 1000 - waste[i])
+        self.worksheet.cell(1, col, str(ind))
+        self.workbook.save('ResHWF.xlsx')
 
     # Evaluate a chromosome in a specific test
     # - ind = Individual chromosome used to evaluate fitness
@@ -209,7 +257,7 @@ class FitnessEvaluator:
     # It needs for test cases to all have the same size
     # In this case we have 20 objects
     # If we change, it does not work
-    def evalFitnessCase(self, ind, idx, trainf):
+    def evalFitnessCase(self, ind, idx, trainf, heuristic):
         # Get our data (test or train)
         n = self.train_n if trainf else self.test_n
         c = self.train_c if trainf else self.test_c
@@ -217,7 +265,7 @@ class FitnessEvaluator:
         # We setup our "environment"
         # This is the terminals that the problem will use for its expression
         # We have a list of length 24
-        # First element is N
+        # First element is N, dynamic on each object
         # Second element is C
         # Third element is current # of bins used
         # Fourth element is arriving object weigth
@@ -225,18 +273,30 @@ class FitnessEvaluator:
         # Next 20 elements are the N possible bins we can have at the end
         # each with its current occupancy
         terminals.extend([0] * n[idx])
-
+        chosens = [0, 0, 0, 0]
         # Now we simulate each items arrival
-        for item in objs[idx]:
+        for i, item in enumerate(objs[idx]):
             # Update terminals with given object
+            if item > c[idx]:
+                # Item is bigger than capacity
+                continue
+            terminals[0] = (i + 1) / n[idx]
             terminals[3] = item
 
             # Pick heuristic with gene expression and with given terminals
-            heuristic = self.chooseHeuristic(ind, terminals)
+            if heuristic == None:
+                heuristic = self.chooseHeuristic(ind, terminals)
 
             # Check which heuristic to use and do it
             self.heuristics[heuristic](terminals)
+            chosens[heuristic] = chosens[heuristic] + 1
 
+        diff_chosens = 0
+        for i in range(0, 4):
+            if chosens[i] > 0:
+                diff_chosens = diff_chosens + 1
+        if diff_chosens > 1:
+            print("chosens: ", chosens)
         # After all simulation, we calculate fitness with our formula
         # We get all wasted space
         waste = 0

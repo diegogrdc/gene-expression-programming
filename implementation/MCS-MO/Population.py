@@ -1,8 +1,10 @@
 from Chromosome import Chromosome
 from Modificator import Modificator
 from FitnessEvaluator import FitnessEvaluator
+import matplotlib.pyplot as plt
 import numpy as np
 import copy
+import pickle
 
 # Population class representas all chromosomes on each generation.
 # It starts with a random generation of chromosomes, and it evaluates their fitness
@@ -24,7 +26,7 @@ class Population:
     # as we need to use the same genes for all cases and we assume same input size
     # - fitness_dir = Directory of fitness cases used
     # - testing_dir = Directory of test cases used
-    def __init__(self, generations_cnt, population_sz, gene_cnt, class_cnt, head_sz, function_set, terminal_set_sz, fitness_dir, testing_dir):
+    def __init__(self, generations_cnt, population_sz, gene_cnt, class_cnt, head_sz, function_set, terminal_set_sz, fitness_dir, testing_dir, pickle_flag):
         # We store number of generations that we will evolve our chromosomes
         self.generations = generations_cnt
         # We store population size
@@ -53,13 +55,46 @@ class Population:
         for _ in range(0, self.pop_sz):
             self.population.append(Chromosome(
                 self.h, self.t, self.g, self.c, len(self.fn_set), self.tm_set_sz))
+        # Check if stored, then we replace random
+        # population with this one
+        if pickle_flag == True:
+            self.checkPickle()
+
+        # Init history list
+        self.best_hist = []
+
+    def checkPickle(self):
+        infile = open('best_store.txt', 'rb')
+        new_pop = pickle.load(infile)
+        infile.close()
+        self.population = new_pop
 
     # We run the evolutionary process
     # generation by generation
     def run(self):
         # We iterate for each generation
-        for _ in range(0, self.generations):
+        for i in range(0, self.generations):
             self.runGeneration()
+            self.testGeneration()
+            if i % 1000 == 0 and i > 0:
+                self.plotHist()
+                pass
+
+    def plotHist(self):
+        plt.plot(range(0, len(self.best_hist)),
+                 self.best_hist, color='red')
+        plt.xlabel('iteraciones')
+        plt.ylabel('mejor encontrado')
+        plt.title('Mejores en evolucion')
+        plt.show()
+
+   # After every iteration, we test and
+   # save the results of the best of generation
+    def testGeneration(self):
+        best = self.getBestOfGeneration()
+        waste = self.fitness_eval.evaluateChromosomeFitness(
+            best, 0, False, None)
+        self.fitness_eval.writeTestResult(best, waste, 21)
 
     # This function contains the run in one generation
     # From evaulation, to selection and modification
@@ -74,17 +109,26 @@ class Population:
         # Create a modificator
         modifier = Modificator()
         # We need to create another (pop_sz - 1) new chromosomes
-        # Remember we choose the parent gene with roulette wheel based on fitness
-        for _ in range(0, self.pop_sz - 1):
+        # We make tourney and recombine genes
+        # before pushing to new gen
+        while len(new_population) < self.pop_sz - 1:
             # We get a parent to replicate from the roulette
-            ind = self.getIndividualFromRoulette()
+            ind1 = self.getIndividualFromTournament()
+            ind2 = self.getIndividualFromTournament()
+            # Recombine both genes
+            modifier.recombine(ind1, ind2)
             # We modify the individual before adding to new population
-            modifier.modify(ind)
-            new_population.append(ind)
+            modifier.modify(ind1)
+            modifier.modify(ind2)
+            new_population.append(ind1)
+            if len(new_population) < self.pop_sz - 1:
+                new_population.append(ind2)
 
         # At last
         # We keep the best due to elitism
         new_population.append(self.getBestOfGeneration())
+        # Store best so we can graph it
+        self.best_hist.append(max(self.fitness))
 
         # Assign our modified population
         self.population = new_population
@@ -105,15 +149,15 @@ class Population:
     def evalFitness(self):
         self.fitness = self.fitness_eval.evaluatePopulationFitness(
             self.population, True)
-        self.roulette = self.getFitnessRoulette()
 
+    # NOT USED AS WE MOVED TO TOURNAMENT
     # We generate the fitness roulette
     # Remember after calculating fitness
     # we give bigger slices to bigger fitness
     # so they have a bigger chance on reproduction
     def getFitnessRoulette(self):
         # First we need sum of total fitness
-        total = sum(self.fitness)
+        total = sum(self.fitness) * len(self.fitness)
         # Then, we assign roulette vals as needed
         roulette = []
         act = 0
@@ -121,6 +165,19 @@ class Population:
             act = act + self.fitness[i]
             roulette.append(act / total)
         return roulette
+
+    # Function that randomly chooses k
+    # different individuals and returns the best
+    # one of them to continue evolution
+    def getIndividualFromTournament(self, k=3):
+        inds = []
+        fits = []
+        for _ in range(0, k):
+            idx = np.random.randint(0, self.pop_sz)
+            inds.append(copy.deepcopy(self.population[idx]))
+            fits.append(self.fitness[idx])
+        winner_idx = np.argmax(fits)
+        return inds[winner_idx]
 
     def getIndividualFromRoulette(self):
         x = np.random.random()
